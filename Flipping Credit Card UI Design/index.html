@@ -15,6 +15,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-direction: column;
+        perspective: 1000px;
       }
       section::after{
         position: absolute;
@@ -36,17 +38,146 @@
         border-radius: 50%;
         transform: translate(150px,100px);
       }
-      #container{
-        
+      .container{
+        position: relative;
+        height: 225px;
+        width: 375px;
+        z-index: 100 ;
+        transition: 0.6s;
+        transform-style: preserve-3d;
       }
-
+      .container:hover{
+        transform: rotateY(180deg);
+      }
+      #card_front{
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(255, 255, 255,0.1);
+        border-radius: 30px;
+        box-shadow: 0px 25px 45px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(25px);
+        padding: 30px;
+        backface-visibility: hidden;
+      }
+      #card_back{
+        backface-visibility: hidden;
+        transform: rotateY(180deg);
+        display: flex;
+        flex-direction: column;
+        padding: 15px 30px;
+        background-color: rgba(255, 255, 255,0.1);
+        border-radius: 30px;
+        box-shadow: 0px 25px 45px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(25px);
+        height: 100%;
+        justify-content: space-between;
+      }
+      #top{
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+      }
+      #top div{
+        display: flex;
+        gap: 10px;
+        justify-content: start;
+        align-content: center;
+      }
+      #top span{
+        margin-top: 5px;
+        color: white;
+      }
+      #lower{
+        padding-top: 40px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .smaller{
+        font-size: x-small;
+      }
+      #number{
+        font-size: larger;
+      }
+      #info{
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+      }
+      #info span{
+        padding-top: 10px;
+      }
+      #thru{
+        position: relative;
+        bottom: 10px;
+      }
+      .xtra_smaller{
+        font-size: 8px;
+        color: white;
+      }
+      #black-stricp{
+        position: absolute;
+        top: 40px;
+        left: 0;
+        width: 100%;
+        height: 45px;
+        background-color: black;
+      }
+      #cvv{
+        position: absolute;
+        top: 100px;
+        background: repeating-linear-gradient(#fff, #fff 3px, #efefef 0px, #efefef 9px);
+        width: 75%;
+        height: 40px;
+        border-radius: 5px;
+      }
+      #cvv i{
+        position: absolute;
+        right: 0;
+        margin-right: -32px;
+        border-radius: 5px;
+        margin-top: 8px;
+        padding: 2px 6px;
+        background-color: white;
+        font-size: 13px;
+      }
+      
     </style>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <section>
-      <div id="container">
-
+      <div class="container">
+        <div id="card_front">
+          <div id="top">
+            <div>
+              <img src="images/logo.png" alt="" width="50px">
+            <span>Master Card</span>
+            </div>
+            <img id="chip" src="images/chip.png" alt="" width="50px">
+          </div>
+          <div id="lower">
+              <span class="smaller">Card Number</span>
+              <span id="number">8050 3512 6254 8032</span>
+            <div id="info">
+              <span>Anshul Saini</span>
+              <div id="thru">
+                <span class="smaller">Valid Thru</span>
+              <div>05/28</div>
+              </div>
+            </div>
+          </div>
+        </div>
+          <div id="card_back">
+            <span class="xtra_smaller">For customer service call+977 4343 3433 or email at mastercard@gmail.com</span>
+            <div id="black-stricp"></div>
+            <div id="cvv">
+              <i>352</i>
+            </div>
+            <span class="xtra_smaller">simply dummy text of the printing and typesetting industery. Lorem ipsum has been the industry standerd dummy text ever since the 15s, when an unknown printer took a galley of type and scrambled itto make a type speciman back.</span>
+        </div>
       </div>
     </section>
   </body>
