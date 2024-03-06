@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    *{
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        margin: 0%;
+        padding: 0%;
+    }
+    #container{
+        display: flex;
+        background-color: rgb(56, 60, 83);
+        width: 100%;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+    }
+    #box1{
+        
+        color: rgba(255, 255, 255, 0.811);
+        flex-direction: column;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        align-items: center;
+    }
+    #box1,#box2{
+        width: 50%;
+        height: 95%;
+        border-radius: 20px;
+    }
+    #box2{flex-direction: column;
+        color: rgb(30, 40, 64);
+        margin-right: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+    }
+    #info{
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-self: start;
+    }
+    h1{
+        padding-bottom: 10px;
+    }
+    h5{
+        color: rgb(119, 122, 137);
+        padding-bottom: 40px;
+        font-weight: 400;
+    }
+    .search{
+        color: black;
+        border-radius: 20px;
+        margin-bottom: 60px;
+        width: 100%;
+        padding: 0px 5px;
+        height: 60px;
+        background-color: rgb(97, 99, 114);
+        border: transparent;
+        text-align: start;
+    }
+    .search::placeholder{
+        color: rgba(255, 255, 255, 0.811);
+        padding-left: 10px;
+    }
+    span{
+        font-weight: 500;
+        font-size: 10px;
+        color: rgb(135, 139, 172);
+    }
+    #grid-list{
+        display: grid;
+        grid-template-columns: auto auto auto;
+        gap: 30px;
+    }
+    .task-info{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .taskImg{
+        height: 90px;
+        width: 90px;
+        border-radius: 20px;
+        background-color: rgb(182, 62, 150);
+        font-size: large;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #today{
+        padding:20px;
+        width: 85%;
+        display: flex;
+        justify-content: space-between;
+    }
+    hr{
+        width: 85%;
+    }
+    .chckbx{
+
+      height: 20px;
+      width: 20px;
+    }
+    .alignment{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        align-items: center;
+    }
+    .alignment h5{
+        position: absolute;
+        width: 400px;
+        top: 10px;
+        left: 50px;
+    }
+    .alignment div{
+        position: relative;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        gap: 30px;
+    }
+    .indicators-approved{
+        font-weight: bolder;
+        color: green;
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        height: 40px;
+        background-color: rgba(0, 255, 42, 0.368);
+        border: transparent;
+        text-align: start;
+        opacity: 60%;
+        width: 100px;
+    }
+    .indicators-waiting{
+        font-weight: bolder;
+        opacity: 60%;
+        color: grey;
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        height: 40px;
+        background-color: rgba(94, 94, 94, 0.368);
+        border: transparent;
+        text-align: start;
+        width: 100px;
+    }
+    .indicators-inprogress{
+        font-weight: bolder;
+        opacity: 60%;
+        color: blue;
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        height: 40px;
+        background-color: rgba(0, 119, 255, 0.368);
+        border: transparent;
+        text-align: start;
+        width: 100px;
+    }
+    #todayTask{
+        display: flex;
+        flex-direction: column;
+        width: 85%;
+        gap: 10px;
+        padding-top: 10px;
+    }
+    #upcoming{
+        padding:20px;
+        width: 85%;
+        display: flex;
+        justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="box1">
+        <div id="info">
+            <h1>Hi Anshul</h1>
+        <h5>Welcome back to the workspace, we missed You!</h5>
+        <input type="text" class="search" placeholder="Search Task or Projet..">
+        </div>
+        <h3>Projects <span>(13)</span></h3>
+        <div id="grid-list">
+            <div class="task-info">
+                <div class="taskImg">IOTP</div>
+                <span>IOT Project</span>
+            </div>
+            <div class="task-info" ><div class="taskImg" style="background-color: rgba(255, 0, 0, 0.867);">FE</div>
+            <span>Front-End</span>
+            </div>
+            <div class="task-info"><div class="taskImg" style="background-color: rgba(204, 255, 0, 0.896);">BE</div>
+            <span>Back-End</span></div>
+            <div class="task-info"><div class="taskImg" style="background-color: rgba(0, 213, 255, 0.833);">CW</div>
+            <span>College Work</span></div>
+            <div class="task-info"><div class="taskImg" style="background-color: rgba(111, 255, 0, 0.814);">TA</div>
+            <span>Travel App</span></div>
+            <div class="task-info"><div class="taskImg" style="background-color: rgba(166, 131, 36, 0.795);">8+</div>
+            <span>More</span></div>
+        </div>
+    </div>
+    <div id="box2">
+        <h1>Front-End</h1>
+        <h5>A project in which we have to create a taskmanagement web app.</h5>
+        <div id="today"><h3>Today</h3> <i>...</i></div>
+        <hr>
+        <div id="todayTask">
+            <div class="alignment">
+                <div>
+                    <input type="checkbox" name="" class="chckbx">
+                    <h5>Creating initial UI for page</h5></div>
+                    <input type="button" value="Approved" class="indicators-approved">
+            </div>
+            <div class="alignment">
+                <div>
+                    <input type="checkbox" name="" class="chckbx">
+                    <h5>Start Working on that UI</h5></div>
+                    <input type="button" value="In-Waiting" class="indicators-waiting">
+            </div>
+            <div class="alignment">
+                <div>
+                    <input type="checkbox" name="" class="chckbx">
+                    <h5>Taking Reviews About UI From Teammates</h5></div>
+                    <input type="button" value="Approved" class="indicators-approved">
+            </div>
+            <div class="alignment">
+                <div>
+                    <input type="checkbox" name="" class="chckbx">
+                    <h5>Changes In UI</h5></div>
+                    <input type="button" value="In-Progress" class="indicators-inprogress">
+            </div>
+        </div>
+        <div id="upcoming"><h3>Upcoming</h3> <i>...</i></div>
+        <hr>
+        <div id="todayTask">
+            <div class="alignment">
+                <div>
+                    <input type="checkbox" name="" class="chckbx">
+                    <h5>Writing CSS For Tha Page</h5></div>
+                    <input type="button" value="In-Waiting" class="indicators-waiting">
+            </div>
+            <div class="alignment">
+                <div>
+                    <input type="checkbox" name="" class="chckbx">
+                    <h5>wRITING Javascript For That Page</h5></div>
+                    <input type="button" value="In-Waiting" class="indicators-waiting">
+            </div>
+            <div class="alignment">
+                <div>
+                    <input type="checkbox" name="" class="chckbx">
+                    <h5>Creating initial UI for page</h5></div>
+                    <input type="button" value="In-Waiting" class="indicators-waiting">
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
