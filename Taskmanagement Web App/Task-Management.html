@@ -12,6 +12,7 @@
         padding: 0%;
     }
     #container{
+        perspective: 10000px;
         display: flex;
         background-color: rgb(58, 59, 67);
         width: 100%;
@@ -19,21 +20,32 @@
         justify-content: center;
         align-items: center;
     }
-    #box1{
-        
+    #box1{backface-visibility: hidden;
+        margin-left: 25px;
+        margin-right: 5px;
         color: rgba(255, 255, 255, 0.811);
         flex-direction: column;
         display: flex;
         gap: 20px;
         justify-content: center;
         align-items: center;
+        transform-origin: right;
+        backface-visibility: hidden;
+        animation: anime 2s linear normal ,animebox1 2s linear normal ;
     }
     #box1,#box2{
         width: 50%;
         height: 95%;
         border-radius: 20px;
     }
-    #box2{flex-direction: column;
+    #box3{
+        background-color: white;
+    }
+    #box2{
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+        transform-origin: left;
+        flex-direction: column;
         color: rgb(30, 40, 64);
         margin-right: 25px;
         display: flex;
@@ -41,6 +53,26 @@
         align-items: start;
         padding-left: 80px;
         background-color: white;
+        animation: anime 2s linear normal;
+    }
+    @keyframes anime {
+        0%{
+            background-color: transparent;
+            transform: rotateY(180deg);
+        }
+        100%{
+            background-color: white;
+            transform: rotateY(0deg);
+        }
+    }
+    @keyframes animebox1 {
+        75%{
+            color: black;
+            background-color: white;
+        }
+        100%{
+            background-color: transparent;
+        }
     }
     #info{
         display: flex;
@@ -186,10 +218,37 @@
         display: flex;
         justify-content: space-between;
     }
+    .Adder{
+        gap: 20px;
+        position: absolute;
+        left: 22px;
+        top: 22px;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+    }
+    #addButton{
+        border: none;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        padding: 20px;
+        border-radius: 50%;
+    }
+    .Adder span{
+        color: white;
+    }
+    .Adder[type="checkbox"]:checked ~ #AddCon{
+        background-color: white;
+        width: 100%;
+        height: 100%;
+    }
   </style>
 </head>
 <body>
   <div id="container">
+    <div class="Adder"><input type="checkbox" id="addButton" value=""><span><-- Click here to add</span></div>
+    <div class="Adder" id="AddCon"></div>
     <div id="box1">
         <div id="info">
             <h1>Hi Anshul</h1>
@@ -269,6 +328,7 @@
             </div>
         </div>
     </div>
+    <div id="box3"></div>
   </div>
 
   <script src="script.js"></script>
