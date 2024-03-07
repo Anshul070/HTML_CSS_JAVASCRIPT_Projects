@@ -272,9 +272,6 @@
     #cutButton{
         background-color: rgb(58, 59, 67);
     }
-    .Adder span{
-        color: white;
-    }
     #addCon{
         position: absolute;
         background-color: white;
@@ -317,7 +314,13 @@
         border: none;
         text-align: start;
     }
+    #CreateButton:hover{
+        background: linear-gradient(rgb(104, 125, 166),rgb(19, 124, 173));
+
+    }
     #CreateButton{
+        font-size: medium;
+        font-weight: 500;
         width: 65%;
         height: 50px;
         border-radius: 30px;
@@ -332,7 +335,7 @@
 </head>
 <body>
   <div id="container">
-    <div class="Adder"><div id="addButton">+</div><span><-- Click here to add</span></div>
+    <div class="Adder"><div id="addButton">+</div></div>
     <div id="addCon">
         <div class="Hider"><div id="cutButton">x</div></div>
         <div id="ProjectInfo">
