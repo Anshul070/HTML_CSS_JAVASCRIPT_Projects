@@ -33,6 +33,13 @@
         backface-visibility: hidden;
         animation: anime 2s linear normal ,animebox1 2s linear normal ;
     }
+    #box1,#addCon{
+        transition: all ease-in 1s;
+    }
+    #box2{
+        
+        transition: all ease-in 0.5s;
+    }
     #box1,#box2{
         width: 50%;
         height: 95%;
@@ -226,29 +233,121 @@
         display: flex;
         justify-content: start;
         align-items: center;
+        animation: opanime 3s linear normal;
     }
-    #addButton{
+    @keyframes opanime {
+        0%{
+            opacity:0;
+        }
+        75%{
+            opacity: 0;
+        }
+        100%{
+            opacity: 100;
+        }
+    }
+    .Hider{
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        position: relative;
+        padding: 20px;
+        color: white;
+    }
+    #addButton,#cutButton{
+        cursor: pointer;
+        font-weight: bolder;
+        font-size: larger;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        background-color: white;
         border: none;
-        width: 20px;
-        height: 20px;
+        width: 10px;
+        height: 10px;
         text-align: center;
         padding: 20px;
         border-radius: 50%;
     }
+    #cutButton{
+        background-color: rgb(58, 59, 67);
+    }
     .Adder span{
         color: white;
     }
-    .Adder[type="checkbox"]:checked ~ #AddCon{
+    #addCon{
+        backface-visibility: hidden;
+        transform: rotateY(180deg);
+        position: absolute;
         background-color: white;
         width: 100%;
         height: 100%;
+        z-index: 1;
+    }
+    #ProjectInfo{
+        color: white;
+        border-radius: 20px;
+        position: absolute;
+        left: 30%;
+        top: 10%;
+        width: 40%;
+        height: 80%;
+        background-color: rgb(58, 59, 67);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+    }
+    #ProjectInfo h1{position: absolute;
+        top: 30px;
+        font-size: 25px;
+    }
+    #ProjectInfo div{
+        padding-left: 80px;
+        width: 85%;
+    }
+    .PRinput{
+        color: black;
+        border-radius: 20px;
+        margin-bottom: 60px;
+        width: 85%;
+        padding: 0px 5px;
+        height: 60px;
+        background: linear-gradient(rgb(201, 218, 252),rgb(121, 213, 255));
+        border: none;
+        text-align: start;
+    }
+    #CreateButton{
+        width: 65%;
+        height: 50px;
+        border-radius: 30px;
+        border: none;
+        background: linear-gradient(rgb(158, 188, 250),rgb(28, 183, 255));
+    }
+    label{
+        font-size: medium;
+        font-weight: bold;
     }
   </style>
 </head>
 <body>
   <div id="container">
-    <div class="Adder"><input type="checkbox" id="addButton" value=""><span><-- Click here to add</span></div>
-    <div class="Adder" id="AddCon"></div>
+    <div class="Adder"><div id="addButton">+</div><span><-- Click here to add</span></div>
+    <div id="addCon">
+        <div class="Hider"><div id="cutButton">x</div></div>
+        <div id="ProjectInfo">
+            <H1>Enter The basic details of your project.</H1>
+            <div><label for="Name">Project Name</label>
+                <input type="text" name="Name" class="PRinput" placeholder="Name"></div>
+            <div>
+                <label for="Description">Project Description</label>
+            <input type="text" name="Description" class="PRinput" placeholder="Description">
+            </div>
+            <input type="button" id="CreateButton" value="Create Project">
+        </div>
+
+    </div>
     <div id="box1">
         <div id="info">
             <h1>Hi Anshul</h1>
@@ -328,9 +427,21 @@
             </div>
         </div>
     </div>
-    <div id="box3"></div>
   </div>
+  <script>
+    var addCon = document.getElementById('addCon');
+    var addButton = document.getElementById('addButton');
+    var box2 = document.getElementById('box2');
+    var box1 = document.getElementById('box1');
+    var cutButton = document.getElementById('cutButton');
 
+    addButton.addEventListener("click",()=>{
+        addCon.style.transform = 'rotateY(0deg)';
+    });
+    cutButton.addEventListener("click",()=>{
+            addCon.style.transform = 'rotateY(180deg)';
+    })
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
