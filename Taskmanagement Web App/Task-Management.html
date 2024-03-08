@@ -131,6 +131,7 @@
         align-items: center;
         flex-direction: column;
         gap: 15px;
+        transition: all ease-in-out 0.2s;
     }
     .taskImg{
         height: 90px;
@@ -142,6 +143,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    .task-info:hover{
+        transform: scale(1.1);
     }
     #today{
         padding:20px;
@@ -374,12 +378,8 @@
         <h5>Welcome back to the workspace, we missed You!</h5>
         <input type="text" class="search" placeholder="Search Task or Projet..">
         </div>
-        <h3>Projects <span>(13)</span></h3>
+        <h3>Projects <span id="totalProjects">(13)</span></h3>
         <div id="grid-list">
-            <div class="task-info">
-                <div class="taskImg" style="background:linear-gradient(rgb(255, 213, 190) , rgb(218, 154, 17))">IOTP</div>
-                <span>IOT Project</span>
-        </div>
     </div></div>
     <div id="box2">
         <h1>Front-End</h1>
@@ -442,6 +442,7 @@
     var PRname = document.getElementById("PRname");
     var CreateButton = document.getElementById("CreateButton");
     var gridList = document.getElementById("grid-list") 
+    var taskInfo = document.getElementsByClassName('task-info')
 
     function popup(){
         addCon.classList.add('addConPopUp');
@@ -483,15 +484,34 @@
         }
         updateProjectList();
     });
+
+
+
     function updateProjectList(){
+        var totalProjects = document.getElementById('totalProjects');
         gridList.innerHTML = "";
         var colorIndex = 0;
         if (localStorage.projects){
             var parseProjects = [];
             parseProjects = JSON.parse(localStorage.projects);
+            totalProjects.innerHTML = `(${parseProjects.length})`;
             console.log(parseProjects)
             parseProjects.forEach((project,index)=>{
-                if(parseProjects.length>=6 && index>=6){
+                if(index>=6){
+                    var AllTask = document.querySelectorAll('.task-info');
+                    var last = AllTask.item(AllTask.length-1)
+                    last.innerHTML = "";
+                    var taskInfo = document.createElement('div');
+                taskInfo.className = 'task-info';
+                var taskImg = document.createElement('div');
+                taskImg.className = 'taskImg';
+                    taskImg.style.background = colors[colorIndex];
+                    taskImg.innerHTML = `${parseProjects.length-5}+`;
+                var Name = document.createElement('span');
+                Name.innerText = `MORE`;
+                last.appendChild(taskImg);
+                last.appendChild(Name);
+
 
                 }
                 else{
@@ -508,6 +528,12 @@
                     taskImg.style.background = colors[colorIndex];
 
                }
+               var shortName = project.name.split(" ");
+               console.log(shortName);
+               shortName.forEach((element)=>{
+                taskImg.innerHTML += element[0];
+               })
+               taskImg.innerHTML
                 var Name = document.createElement('span');
                 Name.innerText = `${project.name}`;
                 taskInfo.appendChild(taskImg);
