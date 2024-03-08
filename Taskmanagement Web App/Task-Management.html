@@ -250,7 +250,6 @@
         display: flex;
         justify-content: start;
         align-items: center;
-        position: relative;
         padding: 20px;
         color: white;
     }
@@ -258,35 +257,42 @@
         cursor: pointer;
         font-weight: bolder;
         font-size: larger;
-        display: flex;
-        justify-content: start;
-        align-items: center;
         background-color: white;
         border: none;
-        width: 10px;
-        height: 10px;
         text-align: center;
-        padding: 20px;
+        padding: 10px 17px;
         border-radius: 50%;
     }
     #cutButton{
+        color: white;
         background-color: rgb(58, 59, 67);
     }
-    #addCon{
+    .addCon{
         position: absolute;
         background-color: white;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        opacity: 0;
+        width: 50%;
+        height: 90%;
+        z-index: 1;
+        border-radius: 20px;
+        top: 10%;
+        right: 0%;
+        transform:translate(-4%,-50%) scale(0.01);
+        visibility: hidden;
+    }
+    .addConPopUp{
+        top: 50%;
+        visibility: visible;
+
+        transform:translate(-4%,-50%) scale(1);
     }
     #ProjectInfo{
         color: white;
         border-radius: 20px;
         position: absolute;
-        left: 30%;
-        top: 10%;
-        width: 40%;
+        top: 50%;
+        left: 50%;
+        transform: translate( -50%,-50%);
+        width: 80%;
         height: 80%;
         background-color: rgb(58, 59, 67);
         display: flex;
@@ -335,9 +341,9 @@
 </head>
 <body>
   <div id="container">
-    <div class="Adder"><div id="addButton">+</div></div>
-    <div id="addCon">
-        <div class="Hider"><div id="cutButton">x</div></div>
+    <div class="Adder"><button id="addButton" onclick="popup()">+</button></div>
+    <div class="addCon" id="addCon">
+        <div class="Hider"><button id="cutButton" onclick="hidepopup()">x</button></div>
         <div id="ProjectInfo">
             <H1>Enter The basic details of your project.</H1>
             <div><label for="Name">Project Name</label>
@@ -431,27 +437,14 @@
     </div>
   </div>
   <script>
+    var addButton = document.getElementById('Adder');
     var addCon = document.getElementById('addCon');
-    var addButton = document.getElementById('addButton');
-    var box2 = document.getElementById('box2');
-    var box1 = document.getElementById('box1');
-    var cutButton = document.getElementById('cutButton');
-
-    addButton.addEventListener("click",()=>{
-        addCon.style.zIndex = 1;
-        addCon.style.opacity = 100;
-        box1.style.opacity = 0;
-        box2.opacity = 0;
-        box2.style.backgroundColor = 'transparent';
-    });
-    cutButton.addEventListener("click",()=>{
-        addCon.style.zIndex = -1;
-        addCon.style.opacity = 0;
-        box1.style.opacity = 100;
-        box2.opacity = 100;
-        box2.style.backgroundColor = 'white';
-
-    })
+    function popup(){
+        addCon.classList.add('addConPopUp');
+    }
+    function hidepopup(){
+        addCon.classList.remove('addConPopUp');
+    }
   </script>
   <script src="script.js"></script>
 </body>
