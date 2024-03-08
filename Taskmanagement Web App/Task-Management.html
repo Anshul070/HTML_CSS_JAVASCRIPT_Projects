@@ -359,10 +359,10 @@
         <div id="ProjectInfo">
             <H1>Enter The basic details of your project.</H1>
             <div><label for="Name">Project Name</label>
-                <input type="text" name="Name" class="PRinput" placeholder="Name"></div>
+                <input type="text" name="Name" class="PRinput" id="PRname" placeholder="Name"></div>
             <div>
                 <label for="Description">Project Description</label>
-            <input type="text" name="Description" class="PRinput" placeholder="Description">
+            <input type="text" name="Description" class="PRinput"  id="PRdes" placeholder="Description">
             </div>
             <input type="button" id="CreateButton" value="Create Project">
         </div>
@@ -381,7 +381,7 @@
                 <span>IOT Project</span>
             </div>
             <div class="task-info" ><div class="taskImg" style="background:linear-gradient(rgb(106, 178, 183) , rgb(0, 136, 255))">FE</div>
-            <span>Front-End</span>
+                <span>Front-End</span>
             </div>
             <div class="task-info"><div class="taskImg" style="background:linear-gradient(rgb(161, 161, 228) , rgb(163, 50, 208))">BE</div>
             <span>Back-End</span></div>
@@ -449,15 +449,41 @@
     </div>
   </div>
   <script>
-    var addButton = document.getElementById('Adder');
     var addCon = document.getElementById('addCon');
+    var PRdes = document.getElementById("PRdes");
+    var PRname = document.getElementById("PRname");
+    var CreateButton = document.getElementById("CreateButton");
+    var gridList = document.getElementById("grid-list") 
+
     function popup(){
         addCon.classList.add('addConPopUp');
     }
     function hidepopup(){
         addCon.classList.remove('addConPopUp');
     }
-  </script>
+
+
+
+    //project working
+    var a = {};
+    var projectList = [];
+    var strProjects = "";
+    var parseProjects = [];
+
+    CreateButton.addEventListener("click",()=>{
+        a = {'name':PRname.value,'description':PRdes.value};
+        projectList.push(a);
+        console.log(localStorage.projects.length);
+        localStorage.projects += JSON.stringify(projectList);
+        if(typeof parseProjects !== 'undefiend'){
+            console.log(localStorage.projects.length);
+
+        }
+        
+    })
+    
+    </script>
   <script src="script.js"></script>
 </body>
 </html>
+
