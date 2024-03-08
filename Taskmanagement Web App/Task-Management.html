@@ -377,22 +377,10 @@
         <h3>Projects <span>(13)</span></h3>
         <div id="grid-list">
             <div class="task-info">
-                <div class="taskImg" style="background:linear-gradient(rgb(190, 255, 190) , rgb(17, 218, 94))">IOTP</div>
+                <div class="taskImg" style="background:linear-gradient(rgb(255, 213, 190) , rgb(218, 154, 17))">IOTP</div>
                 <span>IOT Project</span>
-            </div>
-            <div class="task-info" ><div class="taskImg" style="background:linear-gradient(rgb(106, 178, 183) , rgb(0, 136, 255))">FE</div>
-                <span>Front-End</span>
-            </div>
-            <div class="task-info"><div class="taskImg" style="background:linear-gradient(rgb(161, 161, 228) , rgb(163, 50, 208))">BE</div>
-            <span>Back-End</span></div>
-            <div class="task-info"><div class="taskImg" style="background:linear-gradient(rgb(174, 181, 126) , rgb(180, 211, 0))">CW</div>
-            <span>College Work</span></div>
-            <div class="task-info"><div class="taskImg" style="background:linear-gradient(rgb(180, 215, 156) , rgb(75, 216, 145))">TA</div>
-            <span>Travel App</span></div>
-            <div class="task-info"><div class="taskImg" style="background:linear-gradient(pink , rgb(216, 75, 98))">8+</div>
-            <span>More</span></div>
         </div>
-    </div>
+    </div></div>
     <div id="box2">
         <h1>Front-End</h1>
         <h5>A project in which we have to create a taskmanagement web app.</h5>
@@ -462,26 +450,77 @@
         addCon.classList.remove('addConPopUp');
     }
 
+    var colors = [
+        "linear-gradient(rgb(190, 255, 190) , rgb(17, 218, 94))",
+        "linear-gradient(rgb(190, 250, 255) , rgb(17, 195, 218))",
+        "linear-gradient(rgb(237, 255, 190) , rgb(191, 218, 17))",
+        "linear-gradient(rgb(255, 190, 190) , rgb(218, 84, 17))",
+        "linear-gradient(rgb(203, 190, 255) , rgb(158, 17, 218))",
+        "linear-gradient(rgb(255, 190, 232) , rgb(218, 17, 188))",
+
+    ]
+    updateProjectList();
+
 
 
     //project working
-    var a = {};
-    var projectList = [];
-    var strProjects = "";
-    var parseProjects = [];
-
     CreateButton.addEventListener("click",()=>{
+        var a = {};
+        var projectList = [];
+        var strProjects = "";
+        var jsonString = "";
         a = {'name':PRname.value,'description':PRdes.value};
         projectList.push(a);
-        console.log(localStorage.projects.length);
-        localStorage.projects += JSON.stringify(projectList);
-        if(typeof parseProjects !== 'undefiend'){
-            console.log(localStorage.projects.length);
+        if(localStorage.projects){
+            localStorage.projects += JSON.stringify(projectList);
+            jsonString = localStorage.projects
+            strProjects = jsonString.replace('][', ',');
+            localStorage.projects = strProjects;
+        }
+        else{
+            localStorage.projects = JSON.stringify(projectList);
 
         }
-        
-    })
-    
+        updateProjectList();
+    });
+    function updateProjectList(){
+        gridList.innerHTML = "";
+        var colorIndex = 0;
+        if (localStorage.projects){
+            var parseProjects = [];
+            parseProjects = JSON.parse(localStorage.projects);
+            console.log(parseProjects)
+            parseProjects.forEach((project,index)=>{
+                if(parseProjects.length>=6 && index>=6){
+
+                }
+                else{
+                var taskInfo = document.createElement('div');
+                taskInfo.className = 'task-info';
+                var taskImg = document.createElement('div');
+                taskImg.className = 'taskImg';
+               if(colorIndex <=5){
+                   taskImg.style.background = colors[colorIndex];
+                   colorIndex++
+            } 
+            else{
+                    colorIndex = 0;
+                    taskImg.style.background = colors[colorIndex];
+
+               }
+                var Name = document.createElement('span');
+                Name.innerText = `${project.name}`;
+                taskInfo.appendChild(taskImg);
+                taskInfo.appendChild(Name);
+                gridList.appendChild(taskInfo);
+                }
+            })
+        }
+        else{
+            gridList.innerHTML = "No Projects Yet";
+
+        }
+    }
     </script>
   <script src="script.js"></script>
 </body>
