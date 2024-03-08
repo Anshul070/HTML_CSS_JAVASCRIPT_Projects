@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Task Manager</title>
   <link rel="stylesheet" href="styles.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <style>
     *{
         font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -33,7 +34,10 @@
         backface-visibility: hidden;
         animation: anime 2s linear normal ,animebox1 2s linear normal ;
     }
-    #box1,#addCon{
+    #addCon{
+        transition: all ease 0.5s;
+    }
+    #box1{
         transition: all ease-in 1s;
     }
     #box2{
@@ -105,6 +109,7 @@
         background-color: rgb(97, 99, 114);
         border: transparent;
         text-align: start;
+        outline: none;
     }
     .search::placeholder{
         color: rgba(255, 255, 255, 0.811);
@@ -147,7 +152,7 @@
     hr{
         width: 85%;
     }
-    .chckbx{
+    .list{
 
       height: 20px;
       width: 20px;
@@ -274,13 +279,15 @@
         height: 90%;
         z-index: 1;
         border-radius: 20px;
-        top: 10%;
+        top: 50%;
         right: 0%;
-        transform:translate(-4%,-50%) scale(0.01);
+        transform:translate(-4%,-50%) scale(1);
+        opacity: 0;
         visibility: hidden;
     }
     .addConPopUp{
         top: 50%;
+        opacity: 100;
         visibility: visible;
 
         transform:translate(-4%,-50%) scale(1);
@@ -310,6 +317,7 @@
         width: 85%;
     }
     .PRinput{
+        outline: none;
         color: black;
         border-radius: 20px;
         margin-bottom: 60px;
@@ -318,7 +326,11 @@
         height: 60px;
         background: linear-gradient(rgb(201, 218, 252),rgb(121, 213, 255));
         border: none;
-        text-align: start;
+        margin-left: 20px;
+        color: white    ;
+    }
+    .PRinput::placeholder{
+        padding-left: 20px;
     }
     #CreateButton:hover{
         background: linear-gradient(rgb(104, 125, 166),rgb(19, 124, 173));
@@ -389,50 +401,50 @@
         <div id="todayTask">
             <div class="alignment">
                 <div>
-                    <input type="checkbox" name="" class="chckbx">
+                    <i class='bx bx-list-ul list'></i>
                     <h5>Creating initial UI for page</h5></div>
                     <input type="button" value="Approved" class="indicators-approved">
-            </div>
-            <div class="alignment">
-                <div>
-                    <input type="checkbox" name="" class="chckbx">
+                </div>
+                <div class="alignment">
+                    <div>
+                    <i class='bx bx-list-ul list'></i>
                     <h5>Start Working on that UI</h5></div>
                     <input type="button" value="In-Waiting" class="indicators-waiting">
-            </div>
-            <div class="alignment">
-                <div>
-                    <input type="checkbox" name="" class="chckbx">
+                </div>
+                <div class="alignment">
+                    <div>
+                    <i class='bx bx-list-ul list'></i>
                     <h5>Taking Reviews About UI From Teammates</h5></div>
                     <input type="button" value="Approved" class="indicators-approved">
-            </div>
-            <div class="alignment">
-                <div>
-                    <input type="checkbox" name="" class="chckbx">
+                </div>
+                <div class="alignment">
+                    <div>
+                    <i class='bx bx-list-ul list'></i>
                     <h5>Changes In UI</h5></div>
                     <input type="button" value="In-Progress" class="indicators-inprogress">
+                </div>
             </div>
-        </div>
-        <div id="upcoming"><h3>Upcoming</h3> <i>...</i></div>
-        <hr>
-        <div id="todayTask">
-            <div class="alignment">
-                <div>
-                    <input type="checkbox" name="" class="chckbx">
+            <div id="upcoming"><h3>Upcoming</h3> <i>...</i></div>
+            <hr>
+            <div id="todayTask">
+                <div class="alignment">
+                    <div>
+                    <i class='bx bx-list-ul list'></i>
                     <h5>Writing CSS For Tha Page</h5></div>
                     <input type="button" value="In-Waiting" class="indicators-waiting">
-            </div>
-            <div class="alignment">
-                <div>
-                    <input type="checkbox" name="" class="chckbx">
-                    <h5>wRITING Javascript For That Page</h5></div>
-                    <input type="button" value="In-Waiting" class="indicators-waiting">
-            </div>
-            <div class="alignment">
-                <div>
-                    <input type="checkbox" name="" class="chckbx">
+                </div>
+                <div class="alignment">
+                    <div>
+                        <i class='bx bx-list-ul list'></i>
+                        <h5>wRITING Javascript For That Page</h5></div>
+                        <input type="button" value="In-Waiting" class="indicators-waiting">
+                    </div>
+                    <div class="alignment">
+                        <div>
+                            <i class='bx bx-list-ul list'></i>
                     <h5>Finishing With Final Touches</h5></div>
                     <input type="button" value="In-Waiting" class="indicators-waiting">
-            </div>
+                </div>
         </div>
     </div>
   </div>
