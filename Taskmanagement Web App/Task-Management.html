@@ -146,13 +146,40 @@
     else{
     }
     updateProjectList();
+    updateTodayTasks();
 
     //Working Of Select Tag
     function Operation(selectID) {
         var selectElement = document.getElementById(selectID)
 
         if(selectElement.value === 'Add'){
-        var Alignment = document.createElement('div');
+            if(localStorage.ProjectTodayTasks){
+                var arr = JSON.parse(localStorage.ProjectTodayTasks);
+                arr.forEach((element)=>{
+                    if(element.projectId === selectedProject){
+                        
+                    }
+                    else{
+                        if(selectElement.id === "operation"){
+            TodayTask.innerHTML = "";
+        }
+        else{
+            upcomingTask.innerHTML = '';
+        }
+                    }
+                })
+                
+        
+            }
+            else{
+                if(selectElement.id === "operation"){
+            TodayTask.innerHTML = '';
+        }
+        else{
+            upcomingTask.innerHTML = '';
+        }
+            }
+            var Alignment = document.createElement('div');
         Alignment.className = 'alignment';
         var Div = document.createElement('div');
         var InputTask = document.createElement('input');
@@ -315,36 +342,23 @@
     //Selected Function to know which function is going to be selected.....
     function Selected(prId){
         selectedProject = prId;
-        console.log(selectedProject)
-        var Alignment = document.createElement('div');
-        Alignment.className = 'alignment';
-        var Div = document.createElement('div');
-        var Itag = document.createElement('i');
-        Itag.className = 'bx bx-list-ul list';
-        var H5 = document.createElement('h5');
-        var Input = document.createElement('input');
-        Input.className = 'indicators-waiting';
-        Input.type = 'button';
-        Div.appendChild(Itag);
-        Div.appendChild(H5);
-        Alignment.appendChild(Div);
-        Alignment.appendChild(Input);
-        TodayTask.appendChild(Alignment);
+        updateTodayTasks();
     }
     function updateTodayTasks(){
         if(selectedProject===""){
-            
+                TodayTask.innerHTML = 'No Task Created Yet'
         }
-        else{
+        else if(localStorage.TodayProjectsTasks){
+            
             var AllTodayTasks = JSON.parse(localStorage.TodayProjectsTasks);
         AllTodayTasks.forEach((element)=>{
             if(element.projectId === selectedProject){
+                console.log(element.projectId + '  ' + selectedProject)
                 TodayTask.innerHTML = "";
-                console.log(element.todayTask)
                 element.todayTask.task.forEach((task,index)=>{
                     var Alignment = document.createElement('div');
-        Alignment.className = 'alignment';
-        var Div = document.createElement('div');
+                    Alignment.className = 'alignment';
+                    var Div = document.createElement('div');
         var Itag = document.createElement('i');
         Itag.className = 'bx bx-list-ul list';
         var H5 = document.createElement('h5');
@@ -366,16 +380,18 @@
         Alignment.appendChild(Div);
         Alignment.appendChild(Input);
         TodayTask.appendChild(Alignment);
-                })
-            }
-            else{
-            }
-        })
+    })
+}
+        else{
+            TodayTask.innerHTML = 'No Task Created Yet'
+        }
+    })
+}
+else{
+            TodayTask.innerHTML = 'Select Any Project'
+
         }
     }
-
-
-
     </script>
   <script src="script.js"></script>
 </body>
