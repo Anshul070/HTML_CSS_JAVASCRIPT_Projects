@@ -216,30 +216,19 @@ hr{
     text-align: start;
     width: 100px;
 }
-.todayTask{
-    display: flex;
-    flex-direction: column;
-    width: 85%;
-    gap: 10px;
-    padding-top: 10px;
-}
-#upcomingTask{
-    position: absolute;
-
-    right: 10%;
-    bottom: 10%;
-}
 #upcoming{
     padding:20px;
     width: 85%;
     display: flex;
-    position: absolute;
-    top: 62%;
     justify-content: space-between;
 }
-#upcoming hr{
-    position: absolute;
-    top:65%;
+.todayTask{
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    height: 50%;
+    gap: 10px;
+    padding-top: 10px;
 }
 .Adder{
     gap: 20px;
@@ -360,50 +349,7 @@ label{
     font-size: medium;
     font-weight: bold;
 }
-.operation{
-    cursor: pointer;
-    position: absolute;
-    right: 0%;
-    top: 16%;
-    border: none;
-    transform: translate(100%,0%);
-    outline: none;
-    width: 30%;
-    height: 20%;    
-    display: flex;
-    gap: 20px;
-    scale: 0.1;
-    transition: all 0.3s;
-    background-color: aqua;
-}
-.upcomingOperation{
-    position: absolute;
-    right: 13%;
-    top: 50%;
-    border: none;
-    transform: translate(100%,0%);
-    outline: none;
-    width: 3%;
-    height: 2%;
-    background-color: aqua; 
-}
-option{
-    color: rgb(58, 59, 67);
-    background-color: rgb(58, 59, 67);
-    opacity: 60%;
-}
-.Add{
-    padding: 10px;
-    background-color: rgba(0, 255, 42, 0.368);
-}
-.Edit{
-    background-color: rgba(94, 94, 94, 0.368);
-}
-.Delete{
-    background-color: rgba(0, 119, 255, 0.368);
 
-}
-#option{
-    font-size: 20px;
-    cursor: pointer;
+select{
+    border: none;
 }
