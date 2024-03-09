@@ -153,11 +153,10 @@
         var selectElement = document.getElementById(selectID)
 
         if(selectElement.value === 'Add'){
-            if(localStorage.ProjectTodayTasks){
-                var arr = JSON.parse(localStorage.ProjectTodayTasks);
+            if(localStorage.TodayProjectsTasks){
+                var arr = JSON.parse(localStorage.TodayProjectsTasks);
                 arr.forEach((element)=>{
                     if(element.projectId === selectedProject){
-                        
                     }
                     else{
                         if(selectElement.id === "operation"){
