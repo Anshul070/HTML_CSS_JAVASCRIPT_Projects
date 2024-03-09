@@ -236,6 +236,7 @@ hr{
     display: none;
 }
 .Adder{
+    z-index: 1;
     position: absolute;
     left: 22px;
     top: 22px;
@@ -263,29 +264,26 @@ hr{
     border: none;
     text-align: center;
     width: 50px;
+    z-index: 1;
     height: 50px;
     border-radius: 50%;
-    transition: all ease 1s;
 }
 .addCon{
-    position: absolute;
     background-color: white;
     width: 50%;
     height: 90%;
     z-index: 1;
     border-radius: 20px;
-    top: 50%;
-    right: 0%;
-    transform:translate(-4%,-50%) scale(1);
+    transform: scale(1);
     opacity: 0;
     visibility: hidden;
+    box-shadow: 5px 3px 15px grey;
 }
 .addConPopUp{
-    top: 50%;
     opacity: 100;
     visibility: visible;
 
-    transform:translate(-4%,-50%) scale(1);
+    transform: scale(1);
 }
 #ProjectInfo{
     color: white;
@@ -351,4 +349,18 @@ select{
     width: 10%;
     text-align: center;
     background-color: transparent;
+}
+#taskOperation{
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0,0.1);
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    visibility: hidden;
+    opacity: 0;
+    backdrop-filter: blur(20px);
+    transition: all ease 0.5s;
 }

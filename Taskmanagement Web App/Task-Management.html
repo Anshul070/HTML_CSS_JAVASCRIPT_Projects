@@ -11,20 +11,22 @@
 </head>
 <body>
   <div id="container">
-    <div class="Adder"><button id="addButton" onclick="popup()">+</button></div>
-    <div class="addCon" id="addCon">
-        <div id="ProjectInfo">
-            <H1>Enter The basic details of your project.</H1>
-            <div><label for="Name">Project Name</label>
-                <input type="text" name="Name" class="PRinput" id="PRname" placeholder="Name"></div>
-            <div>
-                <label for="Description">Project Description</label>
-            <input type="text" name="Description" class="PRinput"  id="PRdes" placeholder="Description">
+    <div id="taskOperation">
+        <div class="addCon" id="addCon">
+            <div id="ProjectInfo">
+                <H1>Enter The basic details of your project.</H1>
+                <div><label for="Name">Project Name</label>
+                    <input type="text" name="Name" class="PRinput" id="PRname" placeholder="Name"></div>
+                <div>
+                    <label for="Description">Project Description</label>
+                <input type="text" name="Description" class="PRinput"  id="PRdes" placeholder="Description">
+                </div>
+                <input type="button" id="CreateButton" value="Create Project">
             </div>
-            <input type="button" id="CreateButton" value="Create Project">
+    
         </div>
-
     </div>
+    <div class="Adder"><button id="addButton" onclick="popup()">+</button></div>
     <div id="box1">
         <div id="info">
             <h1>Hi Anshul</h1>
@@ -92,7 +94,7 @@
                 </div>
         </div>
     </div>
-  </div>
+  </div>    
   <script>
     var addCon = document.getElementById('addCon');
     var PRdes = document.getElementById("PRdes");
@@ -107,7 +109,8 @@
     var option = document.getElementById('option');
     var select = document.getElementsByTagName('select');
     var addButton = document.getElementById('addButton');
-    var a = 0;
+    var taskOperation = document.getElementById('taskOperation');
+    var show = 0;
     var colors = [
     "linear-gradient(rgb(190, 255, 190) , rgb(17, 218, 94))",
     "linear-gradient(rgb(190, 250, 255) , rgb(17, 195, 218))",
@@ -115,21 +118,26 @@
         "linear-gradient(rgb(255, 190, 190) , rgb(218, 84, 17))",
         "linear-gradient(rgb(255, 190, 232) , rgb(218, 17, 188))",
         "linear-gradient(rgb(203, 190, 255) , rgb(158, 17, 218))",
-        
     ]
     
 
     function popup(){
-        if (a === 0){
+        if (show === 0){
             addCon.classList.add('addConPopUp');
+            taskOperation.style.opacity = 100;
+            taskOperation.style.visibility = 'visible';
+            
             addButton.innerText = 'x';
-            a++;
+            show++;
         }
         else{
+            taskOperation.style.opacity = 0;
+            taskOperation.style.visibility = 'hidden';
             addCon.classList.remove('addConPopUp');
             addButton.innerText = '+';
-            a--;
+            show--;
         }
+        console.log(a);
     }
     updateProjectList();
 
@@ -164,10 +172,19 @@
             jsonString = localStorage.projects
             strProjects = jsonString.replace('][', ',');
             localStorage.projects = strProjects;
+            taskOperation.style.opacity = 0;
+            taskOperation.style.visibility = 'hidden';
+            addCon.classList.remove('addConPopUp');
+            addButton.innerText = '+';
+            show--;
         }
         else{
             localStorage.projects = JSON.stringify(projectList);
-
+            taskOperation.style.opacity = 0;
+            taskOperation.style.visibility = 'hidden';
+            addCon.classList.remove('addConPopUp');
+            addButton.innerText = '+';
+            show--;
         }
         updateProjectList();
     });
