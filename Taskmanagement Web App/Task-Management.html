@@ -346,7 +346,7 @@
     }
     function updateTodayTasks(){
         if(selectedProject===""){
-                TodayTask.innerHTML = 'No Task Created Yet'
+                TodayTask.innerHTML = 'Select Any Project'
         }
         else if(localStorage.TodayProjectsTasks){
             
@@ -388,7 +388,7 @@
     })
 }
 else{
-            TodayTask.innerHTML = 'Select Any Project'
+    TodayTask.innerHTML = 'No Task Created Yet'
 
         }
     }
