@@ -225,7 +225,7 @@ hr{
 .todayTask{
     display: flex;
     flex-direction: column;
-    width: 85%;
+    width: 88%;
     height: 50%;
     gap: 10px;
     padding-top: 10px;
@@ -349,6 +349,7 @@ select{
     width: 10%;
     text-align: center;
     background-color: transparent;
+    border-radius: 20px;
 }
 #taskOperation{
     height: 100%;
@@ -363,4 +364,7 @@ select{
     opacity: 0;
     backdrop-filter: blur(20px);
     transition: all ease 0.5s;
+}
+hr{
+    width: 88%;
 }
