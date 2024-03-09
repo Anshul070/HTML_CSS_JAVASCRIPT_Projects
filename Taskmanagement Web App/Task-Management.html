@@ -13,7 +13,6 @@
   <div id="container">
     <div class="Adder"><button id="addButton" onclick="popup()">+</button></div>
     <div class="addCon" id="addCon">
-        <div class="Hider"><button id="cutButton" onclick="hidepopup()">x</button></div>
         <div id="ProjectInfo">
             <H1>Enter The basic details of your project.</H1>
             <div><label for="Name">Project Name</label>
@@ -39,7 +38,8 @@
         <h1 id="projectName">Front-End</h1>
         <h5 id="projectDescription">A project in which we have to create a taskmanagement web app.</h5>
         <div id="today"><h3>Today</h3>
-            <select name="operation" class="operation">
+            <select name="operation" id="operation" onchange="removeOption('operation')">
+                <option value="0">...</option>
                 <option class="Add" value="Add">Add</option>
                 <option class="Edit" value="Edit">Edit</option>
                 <option class="Delete" value="Delete">Delete</option>
@@ -63,8 +63,8 @@
                     
                 </div>
                 <div id="upcoming"><h3>Upcoming</h3>
-                    <select contextmenu="..." name="operation" class="upcomingOperation">
-                        <div >...</div>
+                    <select name="operation" id="upcomingOperation" onchange="removeOption('upcomingOperation')">
+                        <option value="0">. . .</option>
                         <option class="Add" value="Add">Add</option>
                         <option class="Edit" value="Edit">Edit</option>
                         <option class="Delete" value="Delete">Delete</option>
@@ -105,24 +105,50 @@
     var projectDescription = document.getElementById('projectDescription');
     var todayTask = document.getElementById("todayTask");
     var option = document.getElementById('option');
-
+    var select = document.getElementsByTagName('select');
+    var addButton = document.getElementById('addButton');
+    var a = 0;
+    var colors = [
+    "linear-gradient(rgb(190, 255, 190) , rgb(17, 218, 94))",
+    "linear-gradient(rgb(190, 250, 255) , rgb(17, 195, 218))",
+    "linear-gradient(rgb(237, 255, 190) , rgb(191, 218, 17))",
+        "linear-gradient(rgb(255, 190, 190) , rgb(218, 84, 17))",
+        "linear-gradient(rgb(255, 190, 232) , rgb(218, 17, 188))",
+        "linear-gradient(rgb(203, 190, 255) , rgb(158, 17, 218))",
+        
+    ]
+    
 
     function popup(){
-        addCon.classList.add('addConPopUp');
+        if (a === 0){
+            addCon.classList.add('addConPopUp');
+            addButton.innerText = 'x';
+            a++;
+        }
+        else{
+            addCon.classList.remove('addConPopUp');
+            addButton.innerText = '+';
+            a--;
+        }
     }
-    function hidepopup(){
-        addCon.classList.remove('addConPopUp');
-    }
-    var colors = [
-        "linear-gradient(rgb(190, 255, 190) , rgb(17, 218, 94))",
-        "linear-gradient(rgb(190, 250, 255) , rgb(17, 195, 218))",
-        "linear-gradient(rgb(237, 255, 190) , rgb(191, 218, 17))",
-        "linear-gradient(rgb(255, 190, 190) , rgb(218, 84, 17))",
-        "linear-gradient(rgb(203, 190, 255) , rgb(158, 17, 218))",
-        "linear-gradient(rgb(255, 190, 232) , rgb(218, 17, 188))",
-
-    ]
     updateProjectList();
+
+    //remove option => ... from select option
+    function removeOption(selectID) {
+        var selectElement = document.getElementById(selectID)
+        var upOptions = selectElement.childNodes;
+        upOptions.forEach((element,index)=>{
+            if(element.value === '0' && selectElement.value !== '0'){
+                selectElement.removeChild(selectElement.firstChild)
+                console.log(element.value)
+                selectElement.removeChild(selectElement.firstChild)
+            }
+            else{
+                console.log(selectElement.value)
+                
+            }
+        });
+    }
 
 
     //It creates and shows how many projects we have .

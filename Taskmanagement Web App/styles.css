@@ -229,9 +229,13 @@ hr{
     height: 50%;
     gap: 10px;
     padding-top: 10px;
+    overflow: scroll;
+    border: none;
+}
+.todayTask::-webkit-scrollbar{
+    display: none;
 }
 .Adder{
-    gap: 20px;
     position: absolute;
     left: 22px;
     top: 22px;
@@ -251,26 +255,17 @@ hr{
         opacity: 100;
     }
 }
-.Hider{
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    padding: 20px;
-    color: white;
-}
-#addButton,#cutButton{
+#addButton{
     cursor: pointer;
     font-weight: bolder;
     font-size: larger;
     background-color: white;
     border: none;
     text-align: center;
-    padding: 10px 17px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-}
-#cutButton{
-    color: white;
-    background-color: rgb(58, 59, 67);
+    transition: all ease 1s;
 }
 .addCon{
     position: absolute;
@@ -326,7 +321,6 @@ hr{
     height: 60px;
     background: linear-gradient(rgb(201, 218, 252),rgb(121, 213, 255));
     border: none;
-    margin-left: 20px;
     color: white    ;
 }
 .PRinput::placeholder{
@@ -352,4 +346,9 @@ label{
 
 select{
     border: none;
+    outline: none;
+    appearance: none;
+    width: 10%;
+    text-align: center;
+    background-color: transparent;
 }
