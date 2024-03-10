@@ -369,7 +369,7 @@ select{
 hr{
     width: 88%;
 }
-#TaskInput{
+#TaskInput,.TaskInput{
     height: 30px;
     width: 100%;
     border: 0.5px solid grey;
