@@ -381,7 +381,8 @@ hr{
 #IndicatorSelecter{
     border-radius: 20px;
     border: 0.5px solid grey;
-    background-color: rgba(0, 255, 42, 0.368);
+    background-color: rgba(255, 255, 255, 0.736);
+    color: black;
     opacity: 60%;
     height: 40px;
     width: 15%;
@@ -404,5 +405,6 @@ hr{
 }
 
 .CheckBox{
-    scale: 1.2;
+    margin-left: 10px;
+    scale: 1.1;
 }

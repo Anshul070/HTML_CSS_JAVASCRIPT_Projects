@@ -24,6 +24,20 @@ var colors = [
     "linear-gradient(rgb(255, 190, 232) , rgb(218, 17, 188))",
     "linear-gradient(rgb(203, 190, 255) , rgb(158, 17, 218))",
 ]
+var indicatorColor = [
+    "rgba(0, 255, 42, 0.368)",
+    "rgba(0, 119, 255, 0.368)",
+    "rgba(94, 94, 94, 0.368)"
+]
+function ClearProjectTask() {
+    if (localStorage.TodayProjectsTasks) {
+        var LocalStorage = JSON.parse(localStorage.TodayProjectsTasks);
+        if (LocalStorage.length === 0) {
+            localStorage.removeItem("TodayProjectsTasks");
+        }
+    }
+}
+ClearProjectTask();
 
 
 function popup() {
@@ -243,6 +257,7 @@ function Operation(selectID) {
                     btn.id = "TaskCreator";
                     btn.value = "Delete";
                     btn.addEventListener("click", e => DeleteTask());
+                    checkBoxValue = 0;
                     if (selectElement.id === "operation") {
                         TodayTask.appendChild(btn);
                     }
@@ -260,16 +275,6 @@ function Operation(selectID) {
                     }
                 }
             });
-
-            if (arr.length === 0) {
-                if (selectElement.id === "operation") {
-                    TodayTask.innerHTML = "Nothing to Delete";
-                }
-                else {
-                    upcomingTask.innerHTML = 'Nothing to Delete';
-                }
-            }
-
         }
         else {
             if (selectElement.id === "operation") {
@@ -289,7 +294,9 @@ function Operation(selectID) {
 function AddTask() {
     var TaskInput = document.getElementById('TaskInput');
     var IndicatorSelecter = document.getElementById('IndicatorSelecter');
-    var ProjectTodayTasks = { "projectId": selectedProject, "todayTask": { 'task': [TaskInput.value], 'indicator': [IndicatorSelecter.value] } }
+
+    console.log(IndicatorSelecter.value)
+    var ProjectTodayTasks = { "projectId": selectedProject, "todayTask": { 'task': [TaskInput.value], 'indicator': [!IndicatorSelecter.value ? "indicators-approved" : IndicatorSelecter.value] } }
     var Tasks = [];
     Tasks.push(ProjectTodayTasks);
     var StringJson = JSON.stringify(Tasks);
@@ -346,13 +353,16 @@ function DeleteTask() {
     Checkboxes.forEach((element) => {
         if (element.checked) {
             arr.push(element.value);
+            console.log(arr);
         }
     });
+    var arr1 = arr.reverse();
+    console.log(arr1)
 
     AllTasks.forEach((element, elementIndex) => {
         if (element.projectId === selectedProject) {
 
-            arr.forEach((index) => {
+            arr1.forEach((index) => {
                 element.todayTask.task.splice(index, 1);
                 element.todayTask.indicator.splice(index, 1);
             });
@@ -362,6 +372,8 @@ function DeleteTask() {
             var StringJson = JSON.stringify(AllTasks);
             localStorage.TodayProjectsTasks = StringJson;
         }
+        arr = [];
+        arr1 = [];
     });
 
     updateTodayTasks();
@@ -481,16 +493,18 @@ function Selected(prId) {
     updateTodayTasks();
 }
 function updateTodayTasks() {
+    ClearProjectTask();
+
     if (selectedProject === "") {
         TodayTask.innerHTML = 'Select Any Project'
     }
     else if (localStorage.TodayProjectsTasks) {
 
+        TodayTask.innerHTML = "";
         var AllTodayTasks = JSON.parse(localStorage.TodayProjectsTasks);
         AllTodayTasks.forEach((element) => {
             if (element.projectId === selectedProject) {
                 console.log(element.projectId + '  ' + selectedProject)
-                TodayTask.innerHTML = "";
                 element.todayTask.task.forEach((task, index) => {
                     var Alignment = document.createElement('div');
                     Alignment.className = 'alignment';
