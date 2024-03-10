@@ -179,6 +179,14 @@
                             }
                         }
                     })
+                    if (arr.length === 0) {
+                        if (selectElement.id === "operation") {
+                            TodayTask.innerHTML = "";
+                        }
+                        else {
+                            upcomingTask.innerHTML = '';
+                        }
+                    }
 
 
                 }
@@ -218,6 +226,7 @@
             else if (selectElement.value === 'Edit') {
                 if (localStorage.TodayProjectsTasks) {
                     var arr = JSON.parse(localStorage.TodayProjectsTasks);
+
                     arr.forEach((element) => {
                         if (element.projectId === selectedProject) {
                             if (selectElement.id === "operation") {
@@ -274,6 +283,14 @@
                             }
                         }
                     })
+                    if (arr.length === 0) {
+                        if (selectElement.id === "operation") {
+                            TodayTask.innerHTML = "Nothing to edit";
+                        }
+                        else {
+                            upcomingTask.innerHTML = 'Nothing to edit';
+                        }
+                    }
 
                 }
                 else {
@@ -296,7 +313,7 @@
                             else {
                                 upcomingTask.innerHTML = '';
                             }
-                            element.todayTask.task.forEach((tasks,index) => {
+                            element.todayTask.task.forEach((tasks, index) => {
 
 
                                 var Alignment = document.createElement('div');
@@ -351,7 +368,16 @@
                                 upcomingTask.innerHTML = 'Nothing to Delete';
                             }
                         }
-                    })
+                    });
+                    
+                    if (arr.length === 0) {
+                        if (selectElement.id === "operation") {
+                            TodayTask.innerHTML = "Nothing to Delete";
+                        }
+                        else {
+                            upcomingTask.innerHTML = 'Nothing to Delete';
+                        }
+                    }
 
                 }
                 else {
@@ -399,7 +425,7 @@
             }
             updateTodayTasks();
         }
-        
+
         // For Editing Tasks
         function EditTask() {
             var arr = [];
@@ -420,17 +446,36 @@
             });
             updateTodayTasks();
         }
-        
+
         //For Deleting Tasks
-        function DeleteTask(){
+        function DeleteTask() {
             var arr = [];
             var AllTasks = JSON.parse(localStorage.TodayProjectsTasks);
             var Checkboxes = document.querySelectorAll(".CheckBox");
-            Checkboxes.forEach((element)=>{
-                if(element.checked){
-                    console.log(element.value)
+            Checkboxes.forEach((element) => {
+                if (element.checked) {
+                    arr.push(element.value);
                 }
             });
+
+            AllTasks.forEach((element, elementIndex) => {
+                if (element.projectId === selectedProject) {
+
+                    arr.forEach((index) => {
+                        element.todayTask.task.splice(index, 1);
+                        element.todayTask.indicator.splice(index, 1);
+                    });
+                    if (element.todayTask.task.length === 0) {
+                        AllTasks.splice(elementIndex, 1);
+                    }
+                    var StringJson = JSON.stringify(AllTasks);
+                    localStorage.TodayProjectsTasks = StringJson;
+                }
+            });
+
+            updateTodayTasks();
+
+
         }
 
 
@@ -489,6 +534,7 @@
                         var taskImg = document.createElement('div');
                         taskImg.className = 'taskImg';
                         taskImg.style.background = colors[colorIndex];
+                        last.style.boxShadow = `2px 2px 10px grey`;
                         taskImg.innerHTML = `${parseProjects.length - 5}+`;
                         var Name = document.createElement('span');
                         Name.innerText = `MORE`;
@@ -504,11 +550,13 @@
                         taskImg.className = 'taskImg';
                         if (colorIndex <= 5) {
                             taskImg.style.background = colors[colorIndex];
+                            taskImg.style.boxShadow = `2px 2px 10px grey`;
                             colorIndex++
                         }
                         else {
                             colorIndex = 0;
-                            taskImg.style.background = colors[colorIndex];
+                            taskImg.style.boxShadow = `2px 2px 10px grey`;
+                            taskInfo.style.background = colors[colorIndex];
 
                         }
                         var shortName = project.name.split(" ");
@@ -580,11 +628,18 @@
                         })
                     }
                     else {
+                        TodayTask.innerHTML = ''
                         TodayTask.innerHTML = 'No Task Created Yet'
                     }
                 })
+                if(AllTodayTasks.length ===0){
+                    TodayTask.innerHTML = ''
+                    TodayTask.innerHTML = 'No Task Created Yet'
+                    
+                }
             }
             else {
+                TodayTask.innerHTML = ''
                 TodayTask.innerHTML = 'No Task Created Yet'
 
             }

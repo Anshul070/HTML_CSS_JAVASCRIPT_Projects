@@ -97,6 +97,7 @@ h5{
 .search{
     color: black;
     border-radius: 20px;
+    box-shadow: 2px 2px 10px grey;
     margin-bottom: 60px;
     width: 100%;
     padding: 0px 5px;
