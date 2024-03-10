@@ -401,3 +401,7 @@ hr{
     background: linear-gradient(rgb(111, 133, 177),rgb(91, 146, 171));
     color: white;
 }
+
+.CheckBox{
+    scale: 1.2;
+}
