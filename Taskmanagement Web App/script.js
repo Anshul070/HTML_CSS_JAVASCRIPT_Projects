@@ -39,7 +39,7 @@ function ClearProjectTask() {
     if (localStorage.UpcomingProjectsTasks) {
         var LocalStorage = JSON.parse(localStorage.UpcomingProjectsTasks);
         if (LocalStorage.length === 0) {
-            localStorage.removeItem("TodayProjectsTasks");
+            localStorage.removeItem("UpcomingProjectsTasks");
         }
     }
 }
@@ -76,8 +76,6 @@ function Operation(selectID) {
     var selectElement = document.getElementById(selectID)
 
     if (selectElement.value === 'Add') {
-        if (localStorage.TodayProjectsTasks || localStorage.UpcomingProjectsTasks) {
-
             if (selectElement.id === "operation") {
                 TodayTask.innerHTML = '';
             }
@@ -108,7 +106,6 @@ function Operation(selectID) {
             else {
                 upcomingTask.appendChild(Alignment);
             }
-        }
     }
     else if (selectElement.value === 'Edit') {
         if (localStorage.TodayProjectsTasks || localStorage.UpcomingProjectsTasks) {
