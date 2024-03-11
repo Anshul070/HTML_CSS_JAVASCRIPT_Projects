@@ -70,67 +70,48 @@ function Operation(selectID) {
     var selectElement = document.getElementById(selectID)
 
     if (selectElement.value === 'Add') {
-        if (localStorage.TodayProjectsTasks) {
-            var arr = JSON.parse(localStorage.TodayProjectsTasks);
-            arr.forEach((element) => {
-                if (element.projectId === selectedProject) {
-                }
-                else {
-                    if (selectElement.id === "operation") {
-                        TodayTask.innerHTML = "";
-                    }
-                    else {
-                        upcomingTask.innerHTML = '';
-                    }
-                }
-            })
-            if (arr.length === 0) {
-                if (selectElement.id === "operation") {
-                    TodayTask.innerHTML = "";
-                }
-                else {
-                    upcomingTask.innerHTML = '';
-                }
-            }
+        if (localStorage.TodayProjectsTasks || localStorage.UpcomingProjectsTasks) {
 
-
-        }
-        else {
             if (selectElement.id === "operation") {
                 TodayTask.innerHTML = '';
             }
             else {
                 upcomingTask.innerHTML = '';
             }
-        }
-        var Alignment = document.createElement('div');
-        Alignment.className = 'alignment';
-        var Div = document.createElement('div');
-        var InputTask = document.createElement('input');
-        InputTask.id = 'TaskInput';
-        InputTask.placeholder = "Enter Task"
-        var btn = document.createElement('input');
-        btn.type = "button";
-        btn.id = "TaskCreator";
-        btn.value = "Done";
-        btn.addEventListener("click", e => AddTask(selectElement));
-        var Indicator = document.createElement('select');
-        Indicator.id = 'IndicatorSelecter';
-        Indicator.innerHTML = '<option value="indicators-approved">Approved</option><option value="indicators-inprogress">In-Progress</option><option value="indicators-waiting">In-Waiting</option>'
-        Div.appendChild(InputTask);
-        Alignment.appendChild(Div);
-        Alignment.appendChild(Indicator);
-        Alignment.appendChild(btn)
-        if (selectElement.id === "operation") {
-            TodayTask.appendChild(Alignment);
-        }
-        else {
-            upcomingTask.appendChild(Alignment);
+            var Alignment = document.createElement('div');
+            Alignment.className = 'alignment';
+            var Div = document.createElement('div');
+            var InputTask = document.createElement('input');
+            InputTask.id = 'TaskInput';
+            InputTask.placeholder = "Enter Task"
+            var btn = document.createElement('input');
+            btn.type = "button";
+            btn.id = "TaskCreator";
+            btn.value = "Done";
+            btn.addEventListener("click", e => AddTask(selectElement));
+            var Indicator = document.createElement('select');
+            Indicator.id = 'IndicatorSelecter';
+            Indicator.innerHTML = '<option value="indicators-approved">Approved</option><option value="indicators-inprogress">In-Progress</option><option value="indicators-waiting">In-Waiting</option>'
+            Div.appendChild(InputTask);
+            Alignment.appendChild(Div);
+            Alignment.appendChild(Indicator);
+            Alignment.appendChild(btn)
+            if (selectElement.id === "operation") {
+                TodayTask.appendChild(Alignment);
+            }
+            else {
+                upcomingTask.appendChild(Alignment);
+            }
         }
     }
     else if (selectElement.value === 'Edit') {
-        if (localStorage.TodayProjectsTasks) {
-            var arr = JSON.parse(localStorage.TodayProjectsTasks);
+        if (localStorage.TodayProjectsTasks || localStorage.UpcomingProjectsTasks) {
+            if (selectElement.id === "operation") {
+                var arr = JSON.parse(localStorage.TodayProjectsTasks);
+            }
+            else {
+                var arr = JSON.parse(localStorage.UpcomingProjectsTasks);
+            }
 
             arr.forEach((element) => {
                 if (element.projectId === selectedProject) {
@@ -140,7 +121,7 @@ function Operation(selectID) {
                     else {
                         upcomingTask.innerHTML = '';
                     }
-                    element.todayTask.task.forEach((tasks) => {
+                    element.upcomingTask.task.forEach((tasks) => {
 
 
                         var Alignment = document.createElement('div');
@@ -188,14 +169,6 @@ function Operation(selectID) {
                     }
                 }
             })
-            if (arr.length === 0) {
-                if (selectElement.id === "operation") {
-                    TodayTask.innerHTML = "Nothing to edit";
-                }
-                else {
-                    upcomingTask.innerHTML = 'Nothing to edit';
-                }
-            }
 
         }
         else {
@@ -321,7 +294,7 @@ function AddTask(selectElement) {
             localStorage.TodayProjectsTasks = StringJson;
             console.log(localStorage.TodayProjectsTasks);
         }
-    updateTodayTasks();
+        updateTodayTasks();
 
     }
     else {
@@ -390,6 +363,7 @@ function EditTask(selectElement) {
                 var StringJson = JSON.stringify(AllTasks);
                 localStorage.UpcomingProjectsTasks = StringJson;
             }
+            console.log(element);
         });
         updateUpcomingTasks();
     }
