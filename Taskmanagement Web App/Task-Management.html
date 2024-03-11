@@ -45,8 +45,8 @@
             <h5 id="projectDescription">Please select any project and if there is no project create one.</h5>
             <div id="today">
                 <h3>Today</h3>
-                <select name="operation" id="operation" onchange="Operation('operation')">
-                    <option value="0">...</option>
+                <select name="operation" id="operation" onchange="Operation('operation','TodayTask')">
+                    <option value="0">. . .</option>
                     <option class="Add" value="Add">Add</option>
                     <option class="Edit" value="Edit">Edit</option>
                     <option class="Delete" value="Delete">Delete</option>
@@ -73,7 +73,7 @@
             </div>
             <div id="upcoming">
                 <h3>Upcoming</h3>
-                <select name="operation" id="upcomingOperation" onchange="Operation('upcomingOperation')">
+                <select name="operation" id="upcomingOperation" onchange="Operation('upcomingOperation','upcomingTask')">
                     <option value="0">. . .</option>
                     <option class="Add" value="Add">Add</option>
                     <option class="Edit" value="Edit">Edit</option>

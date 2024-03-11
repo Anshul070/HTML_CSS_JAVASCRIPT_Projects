@@ -113,7 +113,7 @@ function Operation(selectID) {
         btn.type = "button";
         btn.id = "TaskCreator";
         btn.value = "Done";
-        btn.addEventListener("click", e => AddTask());
+        btn.addEventListener("click", e => AddTask(selectElement));
         var Indicator = document.createElement('select');
         Indicator.id = 'IndicatorSelecter';
         Indicator.innerHTML = '<option value="indicators-approved">Approved</option><option value="indicators-inprogress">In-Progress</option><option value="indicators-waiting">In-Waiting</option>'
@@ -170,7 +170,7 @@ function Operation(selectID) {
                     btn.type = "button";
                     btn.id = "TaskCreator";
                     btn.value = "Edit";
-                    btn.addEventListener("click", e => EditTask());
+                    btn.addEventListener("click", e => EditTask(selectElement));
                     if (selectElement.id === "operation") {
                         TodayTask.appendChild(btn);
                     }
@@ -256,7 +256,7 @@ function Operation(selectID) {
                     btn.type = "button";
                     btn.id = "TaskCreator";
                     btn.value = "Delete";
-                    btn.addEventListener("click", e => DeleteTask());
+                    btn.addEventListener("click", e => DeleteTask(selectElement));
                     checkBoxValue = 0;
                     if (selectElement.id === "operation") {
                         TodayTask.appendChild(btn);
@@ -291,62 +291,118 @@ function Operation(selectID) {
 
 
 //Create Task And Add it
-function AddTask() {
+function AddTask(selectElement) {
     var TaskInput = document.getElementById('TaskInput');
     var IndicatorSelecter = document.getElementById('IndicatorSelecter');
+    if (selectElement.id === "operation") {
+        var ProjectTasks = { "projectId": selectedProject, "todayTask": { 'task': [TaskInput.value], 'indicator': [!IndicatorSelecter.value ? "indicators-approved" : IndicatorSelecter.value] } }
+        console.log(IndicatorSelecter.value)
+        var Tasks = [];
+        Tasks.push(ProjectTasks);
+        var StringJson = JSON.stringify(Tasks);
+        if (localStorage.TodayProjectsTasks) {
+            var checkId = JSON.parse(localStorage.TodayProjectsTasks);
+            checkId.forEach((element) => {
+                if (element.projectId === selectedProject) {
+                    element.todayTask.task.push(ProjectTasks.todayTask.task[0]);
+                    element.todayTask.indicator.push(ProjectTasks.todayTask.indicator[0]);
+                    localStorage.TodayProjectsTasks = JSON.stringify(checkId);
+                }
+                else {
+                    localStorage.TodayProjectsTasks += StringJson;
+                    var LocalString = localStorage.TodayProjectsTasks;
+                    var CorrectString = LocalString.replace("][", ",");
+                    localStorage.TodayProjectsTasks = CorrectString;
+                }
+            })
+            console.log(checkId);
+        }
+        else {
+            localStorage.TodayProjectsTasks = StringJson;
+            console.log(localStorage.TodayProjectsTasks);
+        }
+    updateTodayTasks();
 
-    console.log(IndicatorSelecter.value)
-    var ProjectTodayTasks = { "projectId": selectedProject, "todayTask": { 'task': [TaskInput.value], 'indicator': [!IndicatorSelecter.value ? "indicators-approved" : IndicatorSelecter.value] } }
-    var Tasks = [];
-    Tasks.push(ProjectTodayTasks);
-    var StringJson = JSON.stringify(Tasks);
-    if (localStorage.TodayProjectsTasks) {
-        var checkId = JSON.parse(localStorage.TodayProjectsTasks);
-        checkId.forEach((element) => {
-            if (element.projectId === selectedProject) {
-                element.todayTask.task.push(ProjectTodayTasks.todayTask.task[0]);
-                element.todayTask.indicator.push(ProjectTodayTasks.todayTask.indicator[0]);
-                localStorage.TodayProjectsTasks = JSON.stringify(checkId);
-            }
-            else {
-                localStorage.TodayProjectsTasks += StringJson;
-                var LocalString = localStorage.TodayProjectsTasks;
-                var CorrectString = LocalString.replace("][", ",");
-                localStorage.TodayProjectsTasks = CorrectString;
-            }
-        })
-        console.log(checkId);
     }
     else {
-        localStorage.TodayProjectsTasks = StringJson;
-        console.log(localStorage.TodayProjectsTasks);
+        var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [TaskInput.value], 'indicator': [!IndicatorSelecter.value ? "indicators-approved" : IndicatorSelecter.value] } }
+        console.log(IndicatorSelecter.value)
+        var Tasks = [];
+        Tasks.push(ProjectTasks);
+        var StringJson = JSON.stringify(Tasks);
+        if (localStorage.UpcomingProjectsTasks) {
+            var checkId = JSON.parse(localStorage.UpcomingProjectsTasks);
+            checkId.forEach((element) => {
+                if (element.projectId === selectedProject) {
+                    element.upcomingTask.task.push(ProjectTasks.upcomingTask.task[0]);
+                    element.upcomingTask.indicator.push(ProjectTasks.upcomingTask.indicator[0]);
+                    localStorage.UpcomingProjectsTasks = JSON.stringify(checkId);
+                }
+                else {
+                    localStorage.UpcomingProjectsTasks += StringJson;
+                    var LocalString = localStorage.UpcomingProjectsTasks;
+                    var CorrectString = LocalString.replace("][", ",");
+                    localStorage.UpcomingProjectsTasks = CorrectString;
+                }
+            })
+            console.log(checkId);
+        }
+        else {
+            localStorage.UpcomingProjectsTasks = StringJson;
+            console.log(localStorage.UpcomingProjectsTasks);
+        }
+        updateUpcomingTasks();
     }
-    updateTodayTasks();
 }
 
 // For Editing Tasks
-function EditTask() {
-    var arr = [];
-    var AllTasks = JSON.parse(localStorage.TodayProjectsTasks);
-    var EditedTasks = document.querySelectorAll(".TaskInput");
-    var EditedIndicator = document.querySelectorAll(".EditedIndicator");
-    AllTasks.forEach((element) => {
-        if (element.projectId === selectedProject) {
-            EditedTasks.forEach((tasks, index) => {
-                element.todayTask.task[index] = tasks.value;
-            });
-            EditedIndicator.forEach((tasks, index) => {
-                element.todayTask.indicator[index] = tasks.value;
-            })
-            var StringJson = JSON.stringify(AllTasks);
-            localStorage.TodayProjectsTasks = StringJson;
-        }
-    });
-    updateTodayTasks();
+function EditTask(selectElement) {
+    if (selectElement.id === "operation") {
+        var AllTasks = JSON.parse(localStorage.TodayProjectsTasks);
+        var EditedTasks = document.querySelectorAll(".TaskInput");
+        var EditedIndicator = document.querySelectorAll(".EditedIndicator");
+        AllTasks.forEach((element) => {
+            if (element.projectId === selectedProject) {
+                EditedTasks.forEach((tasks, index) => {
+                    element.todayTask.task[index] = tasks.value;
+                });
+                EditedIndicator.forEach((tasks, index) => {
+                    element.todayTask.indicator[index] = tasks.value;
+                })
+                var StringJson = JSON.stringify(AllTasks);
+                localStorage.TodayProjectsTasks = StringJson;
+            }
+        });
+        updateTodayTasks();
+    }
+    else {
+        var AllTasks = JSON.parse(localStorage.UpcomingProjectsTasks);
+        var EditedTasks = document.querySelectorAll(".TaskInput");
+        var EditedIndicator = document.querySelectorAll(".EditedIndicator");
+        AllTasks.forEach((element) => {
+            if (element.projectId === selectedProject) {
+                EditedTasks.forEach((tasks, index) => {
+                    element.upcomingTask.task[index] = tasks.value;
+                });
+                EditedIndicator.forEach((tasks, index) => {
+                    element.upcomingTask.indicator[index] = tasks.value;
+                })
+                var StringJson = JSON.stringify(AllTasks);
+                localStorage.UpcomingProjectsTasks = StringJson;
+            }
+        });
+        updateUpcomingTasks();
+    }
 }
 
 //For Deleting Tasks
 function DeleteTask() {
+    if (selectElement.id === "operation") {
+        TodayTask.innerHTML = 'Nothing to Delete';
+    }
+    else {
+        upcomingTask.innerHTML = 'Nothing to Delete';
+    }
     var arr = [];
     var AllTasks = JSON.parse(localStorage.TodayProjectsTasks);
     var Checkboxes = document.querySelectorAll(".CheckBox");
@@ -491,6 +547,7 @@ function updateProjectList() {
 function Selected(prId) {
     selectedProject = prId;
     updateTodayTasks();
+    updateUpcomingTasks();
 }
 function updateTodayTasks() {
     ClearProjectTask();
@@ -546,6 +603,63 @@ function updateTodayTasks() {
     else {
         TodayTask.innerHTML = ''
         TodayTask.innerHTML = 'No Task Created Yet'
+
+    }
+}
+function updateUpcomingTasks() {
+    ClearProjectTask();
+
+    if (selectedProject === "") {
+        upcomingTask.innerHTML = 'Select Any Project'
+    }
+    else if (localStorage.UpcomingProjectsTasks) {
+
+        upcomingTask.innerHTML = "";
+        var AllTodayTasks = JSON.parse(localStorage.UpcomingProjectsTasks);
+        AllTodayTasks.forEach((element) => {
+            if (element.projectId === selectedProject) {
+                console.log(element.projectId + '  ' + selectedProject)
+                element.upcomingTask.task.forEach((task, index) => {
+                    var Alignment = document.createElement('div');
+                    Alignment.className = 'alignment';
+                    var Div = document.createElement('div');
+                    var Itag = document.createElement('i');
+                    Itag.className = 'bx bx-list-ul list';
+                    var H5 = document.createElement('h5');
+                    H5.innerText = task;
+                    var Input = document.createElement('input');
+                    Input.className = element.upcomingTask.indicator[index];
+                    if (element.upcomingTask.indicator[index] === 'indicators-approved') {
+                        Input.value = 'Approved'
+                    }
+                    else if (element.upcomingTask.indicator[index] === 'indicators-inprogress') {
+                        Input.value = 'In-Progress'
+                    }
+                    else {
+                        Input.value = 'In-Waiting'
+                    }
+                    Input.type = 'button';
+                    Div.appendChild(Itag);
+                    Div.appendChild(H5);
+                    Alignment.appendChild(Div);
+                    Alignment.appendChild(Input);
+                    upcomingTask.appendChild(Alignment);
+                })
+            }
+            else {
+                upcomingTask.innerHTML = ''
+                upcomingTask.innerHTML = 'No Task Created Yet'
+            }
+        })
+        if (AllTodayTasks.length === 0) {
+            upcomingTask.innerHTML = ''
+            upcomingTask.innerHTML = 'No Task Created Yet'
+
+        }
+    }
+    else {
+        upcomingTask.innerHTML = ''
+        upcomingTask.innerHTML = 'No Task Created Yet'
 
     }
 }
