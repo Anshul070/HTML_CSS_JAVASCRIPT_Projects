@@ -30,8 +30,14 @@ var indicatorColor = [
     "rgba(94, 94, 94, 0.368)"
 ]
 function ClearProjectTask() {
-    if (localStorage.TodayProjectsTasks) {
+    if (localStorage.TodayProjectsTasks ) {
         var LocalStorage = JSON.parse(localStorage.TodayProjectsTasks);
+        if (LocalStorage.length === 0) {
+            localStorage.removeItem("TodayProjectsTasks");
+        }
+    }
+    if (localStorage.UpcomingProjectsTasks) {
+        var LocalStorage = JSON.parse(localStorage.UpcomingProjectsTasks);
         if (LocalStorage.length === 0) {
             localStorage.removeItem("TodayProjectsTasks");
         }
@@ -192,73 +198,111 @@ function Operation(selectID) {
         }
     }
     else {
-        if (localStorage.TodayProjectsTasks) {
-            var arr = JSON.parse(localStorage.TodayProjectsTasks);
-            arr.forEach((element) => {
-                if (element.projectId === selectedProject) {
-                    if (selectElement.id === "operation") {
-                        TodayTask.innerHTML = '';
+        if (localStorage.TodayProjectsTasks || localStorage.UpcomingProjectsTasks) {
+            if (selectElement.id === "operation") {
+                TodayTask.innerHTML = '';
+                var arr = JSON.parse(localStorage.TodayProjectsTasks);
+                arr.forEach((element) => {
+                    if (element.projectId === selectedProject) {
+                        element.todayTask.task.forEach((tasks, index) => {
+    
+    
+                            var Alignment = document.createElement('div');
+                            Alignment.className = 'alignment';
+                            var Div = document.createElement('div');
+                            var Itag = document.createElement('input');
+                            Itag.type = "checkbox"
+                            Itag.className = 'CheckBox';
+                            Itag.value = checkBoxValue;
+                            checkBoxValue++;
+                            var H5 = document.createElement('h5');
+                            H5.innerText = tasks;
+                            var Input = document.createElement('input');
+                            Input.className = element.todayTask.indicator[index];
+                            if (element.todayTask.indicator[index] === 'indicators-approved') {
+                                Input.value = 'Approved'
+                            }
+                            else if (element.todayTask.indicator[index] === 'indicators-inprogress') {
+                                Input.value = 'In-Progress'
+                            }
+                            else {
+                                Input.value = 'In-Waiting'
+                            }
+                            Input.type = 'button';
+                            Div.appendChild(Itag);
+                            Div.appendChild(H5);
+                            Alignment.appendChild(Div);
+                            Alignment.appendChild(Input);
+                            TodayTask.appendChild(Alignment);
+    
+    
+    
+                        })
+                        var btn = document.createElement('input');
+                        btn.type = "button";
+                        btn.id = "TaskCreator";
+                        btn.value = "Delete";
+                        btn.addEventListener("click", e => DeleteTask(selectElement));
+                        checkBoxValue = 0;
+                            TodayTask.appendChild(btn);
                     }
                     else {
-                        upcomingTask.innerHTML = '';
+                            TodayTask.innerHTML = 'Nothing to Delete';
                     }
-                    element.todayTask.task.forEach((tasks, index) => {
-
-
-                        var Alignment = document.createElement('div');
-                        Alignment.className = 'alignment';
-                        var Div = document.createElement('div');
-                        var Itag = document.createElement('input');
-                        Itag.type = "checkbox"
-                        Itag.className = 'CheckBox';
-                        Itag.value = checkBoxValue;
-                        checkBoxValue++;
-                        var H5 = document.createElement('h5');
-                        H5.innerText = tasks;
-                        var Input = document.createElement('input');
-                        Input.className = element.todayTask.indicator[index];
-                        if (element.todayTask.indicator[index] === 'indicators-approved') {
-                            Input.value = 'Approved'
-                        }
-                        else if (element.todayTask.indicator[index] === 'indicators-inprogress') {
-                            Input.value = 'In-Progress'
-                        }
-                        else {
-                            Input.value = 'In-Waiting'
-                        }
-                        Input.type = 'button';
-                        Div.appendChild(Itag);
-                        Div.appendChild(H5);
-                        Alignment.appendChild(Div);
-                        Alignment.appendChild(Input);
-                        TodayTask.appendChild(Alignment);
-
-
-
-                    })
-                    var btn = document.createElement('input');
-                    btn.type = "button";
-                    btn.id = "TaskCreator";
-                    btn.value = "Delete";
-                    btn.addEventListener("click", e => DeleteTask(selectElement));
-                    checkBoxValue = 0;
-                    if (selectElement.id === "operation") {
-                        TodayTask.appendChild(btn);
-                    }
-                    else {
-                        upcomingTask.appendChild(btn);
-                    }
-                }
-                else {
-
-                    if (selectElement.id === "operation") {
-                        TodayTask.innerHTML = 'Nothing to Delete';
+                });
+            }
+            else {
+                upcomingTask.innerHTML = '';
+                var arr = JSON.parse(localStorage.UpcomingProjectsTasks);
+                arr.forEach((element) => {
+                    if (element.projectId === selectedProject) {
+                        element.upcomingTask.task.forEach((tasks, index) => {
+    
+    
+                            var Alignment = document.createElement('div');
+                            Alignment.className = 'alignment';
+                            var Div = document.createElement('div');
+                            var Itag = document.createElement('input');
+                            Itag.type = "checkbox"
+                            Itag.className = 'CheckBox';
+                            Itag.value = checkBoxValue;
+                            checkBoxValue++;
+                            var H5 = document.createElement('h5');
+                            H5.innerText = tasks;
+                            var Input = document.createElement('input');
+                            Input.className = element.upcomingTask.indicator[index];
+                            if (element.upcomingTask.indicator[index] === 'indicators-approved') {
+                                Input.value = 'Approved'
+                            }
+                            else if (element.upcomingTask.indicator[index] === 'indicators-inprogress') {
+                                Input.value = 'In-Progress'
+                            }
+                            else {
+                                Input.value = 'In-Waiting'
+                            }
+                            Input.type = 'button';
+                            Div.appendChild(Itag);
+                            Div.appendChild(H5);
+                            Alignment.appendChild(Div);
+                            Alignment.appendChild(Input);
+                            upcomingTask.appendChild(Alignment);
+    
+    
+    
+                        })
+                        var btn = document.createElement('input');
+                        btn.type = "button";
+                        btn.id = "TaskCreator";
+                        btn.value = "Delete";
+                        btn.addEventListener("click", e => DeleteTask(selectElement));
+                        checkBoxValue = 0;
+                            upcomingTask.appendChild(btn);
                     }
                     else {
-                        upcomingTask.innerHTML = 'Nothing to Delete';
+                            upcomingTask.innerHTML = 'Nothing to Delete';
                     }
-                }
-            });
+                });
+            }
         }
         else {
             if (selectElement.id === "operation") {
@@ -381,43 +425,69 @@ function EditTask(selectElement) {
 }
 
 //For Deleting Tasks
-function DeleteTask() {
+function DeleteTask(selectElement) {
     if (selectElement.id === "operation") {
-        TodayTask.innerHTML = 'Nothing to Delete';
+        var arr = [];
+        var AllTasks = JSON.parse(localStorage.TodayProjectsTasks);
+        var Checkboxes = document.querySelectorAll(".CheckBox");
+        Checkboxes.forEach((element) => {
+            if (element.checked) {
+                arr.push(element.value);
+                console.log(arr);
+            }
+        });
+        var arr1 = arr.reverse();
+        console.log(arr1)
+    
+        AllTasks.forEach((element, elementIndex) => {
+            if (element.projectId === selectedProject) {
+    
+                arr1.forEach((index) => {
+                    element.todayTask.task.splice(index, 1);
+                    element.todayTask.indicator.splice(index, 1);
+                });
+                if (element.todayTask.task.length === 0) {
+                    AllTasks.splice(elementIndex, 1);
+                }
+                var StringJson = JSON.stringify(AllTasks);
+                localStorage.TodayProjectsTasks = StringJson;
+            }
+            arr = [];
+        });
+        
+        updateTodayTasks();
     }
     else {
-        upcomingTask.innerHTML = 'Nothing to Delete';
-    }
-    var arr = [];
-    var AllTasks = JSON.parse(localStorage.TodayProjectsTasks);
-    var Checkboxes = document.querySelectorAll(".CheckBox");
-    Checkboxes.forEach((element) => {
-        if (element.checked) {
-            arr.push(element.value);
-            console.log(arr);
-        }
-    });
-    var arr1 = arr.reverse();
-    console.log(arr1)
-
-    AllTasks.forEach((element, elementIndex) => {
-        if (element.projectId === selectedProject) {
-
-            arr1.forEach((index) => {
-                element.todayTask.task.splice(index, 1);
-                element.todayTask.indicator.splice(index, 1);
-            });
-            if (element.todayTask.task.length === 0) {
-                AllTasks.splice(elementIndex, 1);
+        var arr = [];
+        var AllTasks = JSON.parse(localStorage.UpcomingProjectsTasks);
+        var Checkboxes = document.querySelectorAll(".CheckBox");
+        Checkboxes.forEach((element) => {
+            if (element.checked) {
+                arr.push(element.value);
+                console.log(arr);
             }
-            var StringJson = JSON.stringify(AllTasks);
-            localStorage.TodayProjectsTasks = StringJson;
-        }
-        arr = [];
-        arr1 = [];
-    });
+        });
+        var arr1 = arr.reverse();
+        console.log(arr1)
+    
+        AllTasks.forEach((element, elementIndex) => {
+            if (element.projectId === selectedProject) {
+    
+                arr1.forEach((index) => {
+                    element.upcomingTask.task.splice(index, 1);
+                    element.upcomingTask.indicator.splice(index, 1);
+                });
+                if (element.upcomingTask.task.length === 0) {
+                    AllTasks.splice(elementIndex, 1);
+                }
+                var StringJson = JSON.stringify(AllTasks);
+                localStorage.UpcomingProjectsTasks = StringJson;
+            }
+            arr = [];
+        });
 
-    updateTodayTasks();
+        updateUpcomingTasks();
+    }
 
 
 }
@@ -455,6 +525,8 @@ CreateButton.addEventListener("click", () => {
         addButton.innerText = '+';
         show--;
     }
+    PRname.value = "";
+    PRdes.value = "";
     updateProjectList();
 });
 
