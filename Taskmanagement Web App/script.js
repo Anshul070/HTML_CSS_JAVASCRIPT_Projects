@@ -108,67 +108,78 @@ function Operation(selectID) {
         if (localStorage.TodayProjectsTasks || localStorage.UpcomingProjectsTasks) {
             if (selectElement.id === "operation") {
                 var arr = JSON.parse(localStorage.TodayProjectsTasks);
-            }
-            else {
-                var arr = JSON.parse(localStorage.UpcomingProjectsTasks);
-            }
-
-            arr.forEach((element) => {
-                if (element.projectId === selectedProject) {
-                    if (selectElement.id === "operation") {
+                arr.forEach((element) => {
+                    if (element.projectId === selectedProject) {
                         TodayTask.innerHTML = '';
-                    }
-                    else {
-                        upcomingTask.innerHTML = '';
-                    }
-                    element.upcomingTask.task.forEach((tasks) => {
+                        element.todayTask.task.forEach((tasks) => {
 
 
-                        var Alignment = document.createElement('div');
-                        Alignment.className = 'alignment';
-                        var Div = document.createElement('div');
-                        var InputTask = document.createElement('input');
-                        InputTask.className = 'TaskInput';
-                        InputTask.value = tasks;
-                        var Indicator = document.createElement('select');
-                        Indicator.id = 'IndicatorSelecter';
-                        Indicator.className = 'EditedIndicator'
-                        Indicator.innerHTML = '<option value="indicators-approved">Approved</option><option value="indicators-inprogress">In-Progress</option><option value="indicators-waiting">In-Waiting</option>'
-                        Div.appendChild(InputTask);
-                        Alignment.appendChild(Div);
-                        Alignment.appendChild(Indicator);
-                        if (selectElement.id === "operation") {
+                            var Alignment = document.createElement('div');
+                            Alignment.className = 'alignment';
+                            var Div = document.createElement('div');
+                            var InputTask = document.createElement('input');
+                            InputTask.className = 'TaskInput';
+                            InputTask.value = tasks;
+                            var Indicator = document.createElement('select');
+                            Indicator.id = 'IndicatorSelecter';
+                            Indicator.className = 'EditedIndicator'
+                            Indicator.innerHTML = '<option value="indicators-approved">Approved</option><option value="indicators-inprogress">In-Progress</option><option value="indicators-waiting">In-Waiting</option>'
+                            Div.appendChild(InputTask);
+                            Alignment.appendChild(Div);
+                            Alignment.appendChild(Indicator);
                             TodayTask.appendChild(Alignment);
-                        }
-                        else {
-                            upcomingTask.appendChild(Alignment);
-                        }
-
-
-
-                    })
-                    var btn = document.createElement('input');
-                    btn.type = "button";
-                    btn.id = "TaskCreator";
-                    btn.value = "Edit";
-                    btn.addEventListener("click", e => EditTask(selectElement));
-                    if (selectElement.id === "operation") {
+                        })
+                        var btn = document.createElement('input');
+                        btn.type = "button";
+                        btn.id = "TaskCreator";
+                        btn.value = "Edit";
+                        btn.addEventListener("click", e => EditTask(selectElement));
                         TodayTask.appendChild(btn);
                     }
                     else {
-                        upcomingTask.appendChild(btn);
-                    }
-                }
-                else {
-
-                    if (selectElement.id === "operation") {
                         TodayTask.innerHTML = 'Nothing to edit';
+                    }
+                })
+            }
+            else {
+                var arr = JSON.parse(localStorage.UpcomingProjectsTasks);
+                arr.forEach((element) => {
+                    if (element.projectId === selectedProject) {
+                        upcomingTask.innerHTML = '';
+                        element.upcomingTask.task.forEach((tasks) => {
+
+
+                            var Alignment = document.createElement('div');
+                            Alignment.className = 'alignment';
+                            var Div = document.createElement('div');
+                            var InputTask = document.createElement('input');
+                            InputTask.className = 'TaskInput';
+                            InputTask.value = tasks;
+                            var Indicator = document.createElement('select');
+                            Indicator.id = 'IndicatorSelecter';
+                            Indicator.className = 'EditedIndicator'
+                            Indicator.innerHTML = '<option value="indicators-approved">Approved</option><option value="indicators-inprogress">In-Progress</option><option value="indicators-waiting">In-Waiting</option>'
+                            Div.appendChild(InputTask);
+                            Alignment.appendChild(Div);
+                            Alignment.appendChild(Indicator);
+                            upcomingTask.appendChild(Alignment);
+
+
+
+                        })
+                        var btn = document.createElement('input');
+                        btn.type = "button";
+                        btn.id = "TaskCreator";
+                        btn.value = "Edit";
+                        btn.addEventListener("click", e => EditTask(selectElement));
+                        upcomingTask.appendChild(btn);
                     }
                     else {
                         upcomingTask.innerHTML = 'Nothing to edit';
                     }
-                }
-            })
+                })
+            }
+
 
         }
         else {
