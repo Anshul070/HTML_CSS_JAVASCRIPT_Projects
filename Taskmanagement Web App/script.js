@@ -15,6 +15,7 @@ var addButton = document.getElementById('addButton');
 var taskOperation = document.getElementById('taskOperation');
 var show = 0;
 var selectedProject = '';
+var search = document.getElementById('search');
 var checkBoxValue = 0;
 var colors = [
     "linear-gradient(rgb(190, 255, 190) , rgb(17, 218, 94))",
@@ -50,7 +51,17 @@ TodayTask.addEventListener('dragover', (ev) => {
 })
 upcomingTask.addEventListener('dragover', (ev) => {
     const dragItem = document.querySelector('.dragging');
-    upcomingTask.appendChild(dragItem);
+    upcomingTasks.appendChild(dragItem);
+})
+
+
+search.addEventListener('input',(e)=>{
+    const value = e.target.value;
+    var Projects = JSON.parse(localStorage.projects);
+    Projects.forEach((project)=>{
+        const isvisible = project.name.includes(value) || project.description.includes(value);
+        console.log(isvisible)
+    });
 })
 
 
