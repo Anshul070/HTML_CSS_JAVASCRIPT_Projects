@@ -56,11 +56,14 @@ upcomingTask.addEventListener('dragover', (ev) => {
 
 
 search.addEventListener('input',(e)=>{
-    const value = e.target.value;
-    var Projects = JSON.parse(localStorage.projects);
-    Projects.forEach((project)=>{
-        const isvisible = project.name.includes(value) || project.description.includes(value);
-        console.log(isvisible)
+    var Projects = document.querySelectorAll('.ProjectName');
+    var TaskInfo = document.querySelectorAll('.task-info');
+    const value = e.target.value.toLowerCase();
+    Projects.forEach((project,index)=>{
+        const isvisible = project.innerText.toLowerCase().includes(value);
+        console.log();
+        TaskInfo[index].classList.toggle('hide',!isvisible);
+
     });
 })
 
@@ -598,6 +601,7 @@ function updateProjectList() {
                 taskImg.innerHTML
                 var Name = document.createElement('span');
                 Name.innerText = `${project.name}`;
+                Name.className = 'ProjectName';
                 taskInfo.appendChild(taskImg);
                 taskInfo.appendChild(Name);
                 taskInfo.addEventListener("click", () => {
