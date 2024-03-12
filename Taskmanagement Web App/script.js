@@ -30,7 +30,7 @@ var indicatorColor = [
     "rgba(94, 94, 94, 0.368)"
 ]
 function ClearProjectTask() {
-    if (localStorage.TodayProjectsTasks ) {
+    if (localStorage.TodayProjectsTasks) {
         var LocalStorage = JSON.parse(localStorage.TodayProjectsTasks);
         if (LocalStorage.length === 0) {
             localStorage.removeItem("TodayProjectsTasks");
@@ -44,6 +44,14 @@ function ClearProjectTask() {
     }
 }
 ClearProjectTask();
+TodayTask.addEventListener('dragover', (ev) => {
+    const dragItem = document.querySelector('.dragging');
+    TodayTask.appendChild(dragItem);
+})
+upcomingTask.addEventListener('dragover', (ev) => {
+    const dragItem = document.querySelector('.dragging');
+    upcomingTask.appendChild(dragItem);
+})
 
 
 function popup() {
@@ -76,36 +84,36 @@ function Operation(selectID) {
     var selectElement = document.getElementById(selectID)
 
     if (selectElement.value === 'Add') {
-            if (selectElement.id === "operation") {
-                TodayTask.innerHTML = '';
-            }
-            else {
-                upcomingTask.innerHTML = '';
-            }
-            var Alignment = document.createElement('div');
-            Alignment.className = 'alignment';
-            var Div = document.createElement('div');
-            var InputTask = document.createElement('input');
-            InputTask.id = 'TaskInput';
-            InputTask.placeholder = "Enter Task"
-            var btn = document.createElement('input');
-            btn.type = "button";
-            btn.id = "TaskCreator";
-            btn.value = "Done";
-            btn.addEventListener("click", e => AddTask(selectElement));
-            var Indicator = document.createElement('select');
-            Indicator.id = 'IndicatorSelecter';
-            Indicator.innerHTML = '<option value="indicators-approved">Approved</option><option value="indicators-inprogress">In-Progress</option><option value="indicators-waiting">In-Waiting</option>'
-            Div.appendChild(InputTask);
-            Alignment.appendChild(Div);
-            Alignment.appendChild(Indicator);
-            Alignment.appendChild(btn)
-            if (selectElement.id === "operation") {
-                TodayTask.appendChild(Alignment);
-            }
-            else {
-                upcomingTask.appendChild(Alignment);
-            }
+        if (selectElement.id === "operation") {
+            TodayTask.innerHTML = '';
+        }
+        else {
+            upcomingTask.innerHTML = '';
+        }
+        var Alignment = document.createElement('div');
+        Alignment.className = 'alignment';
+        var Div = document.createElement('div');
+        var InputTask = document.createElement('input');
+        InputTask.id = 'TaskInput';
+        InputTask.placeholder = "Enter Task"
+        var btn = document.createElement('input');
+        btn.type = "button";
+        btn.id = "TaskCreator";
+        btn.value = "Done";
+        btn.addEventListener("click", e => AddTask(selectElement));
+        var Indicator = document.createElement('select');
+        Indicator.id = 'IndicatorSelecter';
+        Indicator.innerHTML = '<option value="indicators-approved">Approved</option><option value="indicators-inprogress">In-Progress</option><option value="indicators-waiting">In-Waiting</option>'
+        Div.appendChild(InputTask);
+        Alignment.appendChild(Div);
+        Alignment.appendChild(Indicator);
+        Alignment.appendChild(btn);
+        if (selectElement.id === "operation") {
+            TodayTask.appendChild(Alignment);
+        }
+        else {
+            upcomingTask.appendChild(Alignment);
+        }
     }
     else if (selectElement.value === 'Edit') {
         if (localStorage.TodayProjectsTasks || localStorage.UpcomingProjectsTasks) {
@@ -202,8 +210,8 @@ function Operation(selectID) {
                 arr.forEach((element) => {
                     if (element.projectId === selectedProject) {
                         element.todayTask.task.forEach((tasks, index) => {
-    
-    
+
+
                             var Alignment = document.createElement('div');
                             Alignment.className = 'alignment';
                             var Div = document.createElement('div');
@@ -231,9 +239,9 @@ function Operation(selectID) {
                             Alignment.appendChild(Div);
                             Alignment.appendChild(Input);
                             TodayTask.appendChild(Alignment);
-    
-    
-    
+
+
+
                         })
                         var btn = document.createElement('input');
                         btn.type = "button";
@@ -241,10 +249,10 @@ function Operation(selectID) {
                         btn.value = "Delete";
                         btn.addEventListener("click", e => DeleteTask(selectElement));
                         checkBoxValue = 0;
-                            TodayTask.appendChild(btn);
+                        TodayTask.appendChild(btn);
                     }
                     else {
-                            TodayTask.innerHTML = 'Nothing to Delete';
+                        TodayTask.innerHTML = 'Nothing to Delete';
                     }
                 });
             }
@@ -254,8 +262,8 @@ function Operation(selectID) {
                 arr.forEach((element) => {
                     if (element.projectId === selectedProject) {
                         element.upcomingTask.task.forEach((tasks, index) => {
-    
-    
+
+
                             var Alignment = document.createElement('div');
                             Alignment.className = 'alignment';
                             var Div = document.createElement('div');
@@ -283,9 +291,9 @@ function Operation(selectID) {
                             Alignment.appendChild(Div);
                             Alignment.appendChild(Input);
                             upcomingTask.appendChild(Alignment);
-    
-    
-    
+
+
+
                         })
                         var btn = document.createElement('input');
                         btn.type = "button";
@@ -293,10 +301,10 @@ function Operation(selectID) {
                         btn.value = "Delete";
                         btn.addEventListener("click", e => DeleteTask(selectElement));
                         checkBoxValue = 0;
-                            upcomingTask.appendChild(btn);
+                        upcomingTask.appendChild(btn);
                     }
                     else {
-                            upcomingTask.innerHTML = 'Nothing to Delete';
+                        upcomingTask.innerHTML = 'Nothing to Delete';
                     }
                 });
             }
@@ -435,10 +443,10 @@ function DeleteTask(selectElement) {
         });
         var arr1 = arr.reverse();
         console.log(arr1)
-    
+
         AllTasks.forEach((element, elementIndex) => {
             if (element.projectId === selectedProject) {
-    
+
                 arr1.forEach((index) => {
                     element.todayTask.task.splice(index, 1);
                     element.todayTask.indicator.splice(index, 1);
@@ -451,7 +459,7 @@ function DeleteTask(selectElement) {
             }
             arr = [];
         });
-        
+
         updateTodayTasks();
     }
     else {
@@ -466,10 +474,10 @@ function DeleteTask(selectElement) {
         });
         var arr1 = arr.reverse();
         console.log(arr1)
-    
+
         AllTasks.forEach((element, elementIndex) => {
             if (element.projectId === selectedProject) {
-    
+
                 arr1.forEach((index) => {
                     element.upcomingTask.task.splice(index, 1);
                     element.upcomingTask.indicator.splice(index, 1);
@@ -640,6 +648,14 @@ function updateTodayTasks() {
                     Div.appendChild(H5);
                     Alignment.appendChild(Div);
                     Alignment.appendChild(Input);
+
+                    Alignment.draggable = true;
+                    Alignment.addEventListener("dragstart", (ev) => {
+                        ev.currentTarget.classList.add('dragging');
+                    })
+                    Alignment.addEventListener("dragend", (ev) => {
+                        ev.currentTarget.classList.remove('dragging');
+                    })
                     TodayTask.appendChild(Alignment);
                 })
             }

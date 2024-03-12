@@ -415,3 +415,6 @@ hr{
     margin-left: 10px;
     scale: 1.1;
 }
+.hide{
+    display: none;
+}
