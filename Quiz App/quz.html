@@ -147,13 +147,13 @@
                 button.value = option;
                 button.className = "optionButton";
                 button.addEventListener("click",(e)=>{
-                    checkAnswer(option,questionList[questionIndex].correctAnswer);
+                    checkAnswer(option,questionList[questionIndex].correctAnswer,counter,CounterTIMEOUT);
                     
                 })
                 buttons.appendChild(button);
             });
         }
-        function checkAnswer(selectedAnswer,correctAnswer){
+        function checkAnswer(selectedAnswer,correctAnswer,counter,CounterTIMEOUT){
             if(selectedAnswer === correctAnswer){
                 scoreCount++
                 score.innerHTML = `Scroe : ${scoreCount}`
@@ -161,6 +161,7 @@
             questionIndex++
             Timer = 30;
             clearInterval(counter);
+            console.log(counter);
             clearTimeout(CounterTIMEOUT);
             buttons.innerHTML = "";
             loadQuestion();
