@@ -46,11 +46,13 @@ function ClearProjectTask() {
 }
 ClearProjectTask();
 TodayTask.addEventListener('dragover', (ev) => {
-    const dragItem = document.querySelector('.dragging');
+    ev.preventDefault();
+    var dragItem = document.querySelector('.dragging');
     TodayTask.appendChild(dragItem);
 })
 upcomingTask.addEventListener('dragover', (ev) => {
-    const dragItem = document.querySelector('.dragging');
+    ev.preventDefault();
+    var dragItem = document.querySelector('.dragging');
     upcomingTasks.appendChild(dragItem);
 })
 
@@ -63,7 +65,6 @@ search.addEventListener('input',(e)=>{
         const isvisible = project.innerText.toLowerCase().includes(value);
         console.log();
         TaskInfo[index].classList.toggle('hide',!isvisible);
-
     });
 })
 
