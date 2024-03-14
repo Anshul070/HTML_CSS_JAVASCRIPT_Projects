@@ -60,6 +60,7 @@ upcomingTask.addEventListener('dragover', (ev) => {
 });
 upcomingTask.addEventListener('drop',(ev) => {
     DropUpcomingTask(DragedUpcomingTask);
+    RemoveTodayTask(DragedUpcomingTask);
     console.log(DragedUpcomingTask);
 });
 
@@ -91,7 +92,26 @@ function DropUpcomingTask(taskName){
         updateUpcomingTasks();
 }
 
-
+function RemoveTodayTask(taskName){
+    var AllTasks = JSON.parse(localStorage.TodayProjectsTasks);
+    AllTasks.forEach((element,elementIndex)=>{
+        if(element.projectId === selectedProject){
+            var arr = element.todayTask.task;
+            arr.forEach((task,index)=>{
+                if(task===taskName){
+                    element.todayTask.task.splice(index,1);
+                    element.todayTask.indicator.splice(index,1);
+                }
+            });
+            if(arr.length ===0){
+                AllTasks.splice(elementIndex,1);
+            }
+        };
+    });
+    var StringJson = JSON.stringify(AllTasks);
+    localStorage.TodayProjectsTasks = StringJson;
+    updateTodayTasks();
+}
 
 
 search.addEventListener('input',(e)=>{
