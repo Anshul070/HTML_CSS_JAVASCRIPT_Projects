@@ -53,7 +53,7 @@ TodayTask.addEventListener('dragover', (ev) => {
 upcomingTask.addEventListener('dragover', (ev) => {
     ev.preventDefault();
     var dragItem = document.querySelector('.dragging');
-    upcomingTasks.appendChild(dragItem);
+    upcomingTask.appendChild(dragItem);
 })
 
 
