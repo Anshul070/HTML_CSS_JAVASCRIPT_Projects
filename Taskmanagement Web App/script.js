@@ -57,6 +57,8 @@ upcomingTask.addEventListener('dragover', (ev) => {
 })
 
 
+
+
 search.addEventListener('input',(e)=>{
     var Projects = document.querySelectorAll('.ProjectName');
     var TaskInfo = document.querySelectorAll('.task-info');
@@ -101,28 +103,42 @@ function Operation(selectID) {
     if (selectElement.value === 'Add') {
         if (selectElement.id === "operation") {
             TodayTask.innerHTML = '';
+            var Alignment = document.createElement('div');
+            Alignment.className = 'alignment';
+            var Div = document.createElement('div');
+            var InputTask = document.createElement('input');
+            InputTask.id = 'TaskInput';
+            InputTask.placeholder = "Enter Task"
+            var btn = document.createElement('input');
+            btn.type = "button";
+            btn.id = "TaskCreator";
+            btn.value = "Done";
+            btn.addEventListener("click", e => AddTask(selectElement));
+            var Indicator = document.createElement('select');
+            Indicator.id = 'IndicatorSelecter';
+            Indicator.innerHTML = '<option value="indicators-approved">Approved</option><option value="indicators-inprogress">In-Progress</option><option value="indicators-waiting">In-Waiting</option>'
+            Div.appendChild(InputTask);
+            Alignment.appendChild(Div);
+            Alignment.appendChild(Indicator);
+            Alignment.appendChild(btn);
         }
         else {
             upcomingTask.innerHTML = '';
+            var Alignment = document.createElement('div');
+            Alignment.className = 'alignment';
+            var Div = document.createElement('div');
+            var InputTask = document.createElement('input');
+            InputTask.id = 'TaskInput';
+            InputTask.placeholder = "Enter Task"
+            var btn = document.createElement('input');
+            btn.type = "button";
+            btn.id = "TaskCreator";
+            btn.value = "Done";
+            btn.addEventListener("click", e => AddTask(selectElement));
+            Div.appendChild(InputTask);
+            Alignment.appendChild(Div);
+            Alignment.appendChild(btn);
         }
-        var Alignment = document.createElement('div');
-        Alignment.className = 'alignment';
-        var Div = document.createElement('div');
-        var InputTask = document.createElement('input');
-        InputTask.id = 'TaskInput';
-        InputTask.placeholder = "Enter Task"
-        var btn = document.createElement('input');
-        btn.type = "button";
-        btn.id = "TaskCreator";
-        btn.value = "Done";
-        btn.addEventListener("click", e => AddTask(selectElement));
-        var Indicator = document.createElement('select');
-        Indicator.id = 'IndicatorSelecter';
-        Indicator.innerHTML = '<option value="indicators-approved">Approved</option><option value="indicators-inprogress">In-Progress</option><option value="indicators-waiting">In-Waiting</option>'
-        Div.appendChild(InputTask);
-        Alignment.appendChild(Div);
-        Alignment.appendChild(Indicator);
-        Alignment.appendChild(btn);
         if (selectElement.id === "operation") {
             TodayTask.appendChild(Alignment);
         }
@@ -181,16 +197,14 @@ function Operation(selectID) {
                             var InputTask = document.createElement('input');
                             InputTask.className = 'TaskInput';
                             InputTask.value = tasks;
-                            var Indicator = document.createElement('select');
-                            Indicator.id = 'IndicatorSelecter';
-                            Indicator.className = 'EditedIndicator'
-                            Indicator.innerHTML = '<option value="indicators-approved">Approved</option><option value="indicators-inprogress">In-Progress</option><option value="indicators-waiting">In-Waiting</option>'
+                            var Indicator = document.createElement('input');
+                            Indicator.value = "In-Waiting"
+                            Indicator.className = 'EditedIndicator indicators-waiting'
+                            Indicator.type = 'button';
                             Div.appendChild(InputTask);
                             Alignment.appendChild(Div);
                             Alignment.appendChild(Indicator);
                             upcomingTask.appendChild(Alignment);
-
-
 
                         })
                         var btn = document.createElement('input');
@@ -290,16 +304,8 @@ function Operation(selectID) {
                             var H5 = document.createElement('h5');
                             H5.innerText = tasks;
                             var Input = document.createElement('input');
-                            Input.className = element.upcomingTask.indicator[index];
-                            if (element.upcomingTask.indicator[index] === 'indicators-approved') {
-                                Input.value = 'Approved'
-                            }
-                            else if (element.upcomingTask.indicator[index] === 'indicators-inprogress') {
-                                Input.value = 'In-Progress'
-                            }
-                            else {
-                                Input.value = 'In-Waiting'
-                            }
+                            Input.className = 'indicators-waiting'
+                            Input.value = 'In-Waiting'
                             Input.type = 'button';
                             Div.appendChild(Itag);
                             Div.appendChild(H5);
@@ -373,8 +379,7 @@ function AddTask(selectElement) {
 
     }
     else {
-        var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [TaskInput.value], 'indicator': [!IndicatorSelecter.value ? "indicators-approved" : IndicatorSelecter.value] } }
-        console.log(IndicatorSelecter.value)
+        var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [TaskInput.value]} }
         var Tasks = [];
         Tasks.push(ProjectTasks);
         var StringJson = JSON.stringify(Tasks);
@@ -383,7 +388,6 @@ function AddTask(selectElement) {
             checkId.forEach((element) => {
                 if (element.projectId === selectedProject) {
                     element.upcomingTask.task.push(ProjectTasks.upcomingTask.task[0]);
-                    element.upcomingTask.indicator.push(ProjectTasks.upcomingTask.indicator[0]);
                     localStorage.UpcomingProjectsTasks = JSON.stringify(checkId);
                 }
                 else {
@@ -426,15 +430,11 @@ function EditTask(selectElement) {
     else {
         var AllTasks = JSON.parse(localStorage.UpcomingProjectsTasks);
         var EditedTasks = document.querySelectorAll(".TaskInput");
-        var EditedIndicator = document.querySelectorAll(".EditedIndicator");
         AllTasks.forEach((element) => {
             if (element.projectId === selectedProject) {
                 EditedTasks.forEach((tasks, index) => {
                     element.upcomingTask.task[index] = tasks.value;
                 });
-                EditedIndicator.forEach((tasks, index) => {
-                    element.upcomingTask.indicator[index] = tasks.value;
-                })
                 var StringJson = JSON.stringify(AllTasks);
                 localStorage.UpcomingProjectsTasks = StringJson;
             }
@@ -495,7 +495,6 @@ function DeleteTask(selectElement) {
 
                 arr1.forEach((index) => {
                     element.upcomingTask.task.splice(index, 1);
-                    element.upcomingTask.indicator.splice(index, 1);
                 });
                 if (element.upcomingTask.task.length === 0) {
                     AllTasks.splice(elementIndex, 1);
@@ -668,6 +667,7 @@ function updateTodayTasks() {
                     Alignment.draggable = true;
                     Alignment.addEventListener("dragstart", (ev) => {
                         ev.currentTarget.classList.add('dragging');
+                        
                     })
                     Alignment.addEventListener("dragend", (ev) => {
                         ev.currentTarget.classList.remove('dragging');
@@ -714,16 +714,8 @@ function updateUpcomingTasks() {
                     var H5 = document.createElement('h5');
                     H5.innerText = task;
                     var Input = document.createElement('input');
-                    Input.className = element.upcomingTask.indicator[index];
-                    if (element.upcomingTask.indicator[index] === 'indicators-approved') {
-                        Input.value = 'Approved'
-                    }
-                    else if (element.upcomingTask.indicator[index] === 'indicators-inprogress') {
-                        Input.value = 'In-Progress'
-                    }
-                    else {
-                        Input.value = 'In-Waiting'
-                    }
+                    Input.className = 'indicators-waiting';
+                    Input.value = 'In-Waiting'
                     Input.type = 'button';
                     Div.appendChild(Itag);
                     Div.appendChild(H5);
