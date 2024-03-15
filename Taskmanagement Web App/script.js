@@ -113,7 +113,6 @@ function RemoveTodayTask(taskName){
     updateTodayTasks();
 }
 
-
 search.addEventListener('input',(e)=>{
     var Projects = document.querySelectorAll('.ProjectName');
     var TaskInfo = document.querySelectorAll('.task-info');
@@ -693,7 +692,7 @@ function updateTodayTasks() {
         var AllTodayTasks = JSON.parse(localStorage.TodayProjectsTasks);
         AllTodayTasks.forEach((element) => {
             if (element.projectId === selectedProject) {
-                console.log(element.projectId + '  ' + selectedProject)
+                console.log('TodayTask');
                 element.todayTask.task.forEach((task, index) => {
                     var Alignment = document.createElement('div');
                     Alignment.className = 'alignment';
@@ -759,7 +758,6 @@ function updateUpcomingTasks() {
         var AllTodayTasks = JSON.parse(localStorage.UpcomingProjectsTasks);
         AllTodayTasks.forEach((element) => {
             if (element.projectId === selectedProject) {
-                console.log(element.projectId + '  ' + selectedProject)
                 element.upcomingTask.task.forEach((task, index) => {
                     var Alignment = document.createElement('div');
                     Alignment.className = 'alignment';
@@ -778,6 +776,7 @@ function updateUpcomingTasks() {
                     Alignment.appendChild(Input);
                     upcomingTask.appendChild(Alignment);
                 })
+                console.log('Upcoming task');
             }
             else {
                 upcomingTask.innerHTML = ''

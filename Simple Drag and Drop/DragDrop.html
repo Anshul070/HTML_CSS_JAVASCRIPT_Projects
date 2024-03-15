@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag&Drop</title>
+</head>
+<body>
+    <div class="Container">
+        <div id="left" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div id="List1" draggable="true" ondragstart="drag(event)">Item 1</div>
+            <div id="List2" draggable="true" ondragstart="drag(event)">Item 2</div>
+            <div id="List3" draggable="true" ondragstart="drag(event)">Item 3</div>
+            <div id="List4" draggable="true" ondragstart="drag(event)">Item 4</div>
+        </div>
+        <h1><pre>Drag 
+ And 
+  Drop 
+   List</pre></h1>
+        <div id="right" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+</body>
+</html>
+
+
+
