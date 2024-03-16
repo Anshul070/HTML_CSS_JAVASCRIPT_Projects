@@ -26,11 +26,6 @@ var colors = [
     "linear-gradient(rgb(255, 190, 232) , rgb(218, 17, 188))",
     "linear-gradient(rgb(203, 190, 255) , rgb(158, 17, 218))",
 ]
-var indicatorColor = [
-    "rgba(0, 255, 42, 0.368)",
-    "rgba(0, 119, 255, 0.368)",
-    "rgba(94, 94, 94, 0.368)"
-]
 function ClearProjectTask() {
     if (localStorage.TodayProjectsTasks) {
         var LocalStorage = JSON.parse(localStorage.TodayProjectsTasks);
@@ -46,22 +41,23 @@ function ClearProjectTask() {
     }
 }
 ClearProjectTask();
-TodayTask.addEventListener('dragover', (ev) => {
-    ev.preventDefault();
-    var dragItem = document.querySelector('.dragging');
-    TodayTask.appendChild(dragItem);
-})
 upcomingTask.addEventListener('dragover', (ev) => {
     ev.preventDefault();
-    var dragItem = document.querySelector('.dragging');
+    try{
+        var dragItem = document.querySelector('.dragging');
     var a = dragItem.childNodes;
     var b = a[0].childNodes
     DragedUpcomingTask = b[1].innerHTML
+    }
+    catch(e){
+        console.log('ERROR:' + e);
+    }
 });
 upcomingTask.addEventListener('drop',(ev) => {
-    DropUpcomingTask(DragedUpcomingTask);
-    RemoveTodayTask(DragedUpcomingTask);
-    console.log(DragedUpcomingTask);
+    if(DragedUpcomingTask !== null && DragedUpcomingTask !== ""){
+        DropUpcomingTask(DragedUpcomingTask);
+        RemoveTodayTask(DragedUpcomingTask);
+    }
 });
 
 function DropUpcomingTask(taskName){
@@ -74,24 +70,20 @@ function DropUpcomingTask(taskName){
         var checkId = JSON.parse(localStorage.UpcomingProjectsTasks);
         checkId.forEach((element) => {
             if (element.projectId === selectedProject) {
-                    console.log('if');
                     element.upcomingTask.task.push(ProjectTasks.upcomingTask.task[0]);
                     localStorage.UpcomingProjectsTasks = JSON.stringify(checkId);
                     Exist = true;
                 }
             })
             if(!Exist) {
-                console.log('else');
                 localStorage.UpcomingProjectsTasks += StringJson;
                 var LocalString = localStorage.UpcomingProjectsTasks;
                 var CorrectString = LocalString.replace("][", ",");
                 localStorage.UpcomingProjectsTasks = CorrectString;
             }
-            console.log(checkId);
         }
         else {
             localStorage.UpcomingProjectsTasks = StringJson;
-            console.log(localStorage.UpcomingProjectsTasks);
         }
         updateUpcomingTasks();
 }
@@ -123,7 +115,6 @@ search.addEventListener('input',(e)=>{
     const value = e.target.value.toLowerCase();
     Projects.forEach((project,index)=>{
         const isvisible = project.innerText.toLowerCase().includes(value);
-        console.log();
         TaskInfo[index].classList.toggle('hide',!isvisible);
     });
 })
@@ -409,7 +400,6 @@ function AddTask(selectElement) {
     var Exist = false;
     if (selectElement.id === "operation") {
         var ProjectTasks = { "projectId": selectedProject, "todayTask": { 'task': [TaskInput.value], 'indicator': [!IndicatorSelecter.value ? "indicators-approved" : IndicatorSelecter.value] } }
-        console.log(IndicatorSelecter.value)
         var Tasks = [];
         Tasks.push(ProjectTasks);
         var StringJson = JSON.stringify(Tasks);
@@ -429,11 +419,9 @@ function AddTask(selectElement) {
                 var CorrectString = LocalString.replace("][", ",");
                 localStorage.TodayProjectsTasks = CorrectString;
             }
-            console.log(checkId);
         }
         else {
             localStorage.TodayProjectsTasks = StringJson;
-            console.log(localStorage.TodayProjectsTasks);
         }
         updateTodayTasks();
 
@@ -441,6 +429,7 @@ function AddTask(selectElement) {
     else {
         var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [TaskInput.value]} }
         var Tasks = [];
+        var Exist = false;
         Tasks.push(ProjectTasks);
         var StringJson = JSON.stringify(Tasks);
         if (localStorage.UpcomingProjectsTasks) {
@@ -449,19 +438,18 @@ function AddTask(selectElement) {
                 if (element.projectId === selectedProject) {
                     element.upcomingTask.task.push(ProjectTasks.upcomingTask.task[0]);
                     localStorage.UpcomingProjectsTasks = JSON.stringify(checkId);
-                }
-                else {
-                    localStorage.UpcomingProjectsTasks += StringJson;
-                    var LocalString = localStorage.UpcomingProjectsTasks;
-                    var CorrectString = LocalString.replace("][", ",");
-                    localStorage.UpcomingProjectsTasks = CorrectString;
+                    Exist = true;
                 }
             })
-            console.log(checkId);
+            if(!Exist) {
+                localStorage.UpcomingProjectsTasks += StringJson;
+                var LocalString = localStorage.UpcomingProjectsTasks;
+                var CorrectString = LocalString.replace("][", ",");
+                localStorage.UpcomingProjectsTasks = CorrectString;
+            }
         }
         else {
             localStorage.UpcomingProjectsTasks = StringJson;
-            console.log(localStorage.UpcomingProjectsTasks);
         }
         updateUpcomingTasks();
     }
@@ -498,7 +486,6 @@ function EditTask(selectElement) {
                 var StringJson = JSON.stringify(AllTasks);
                 localStorage.UpcomingProjectsTasks = StringJson;
             }
-            console.log(element);
         });
         updateUpcomingTasks();
     }
@@ -513,11 +500,9 @@ function DeleteTask(selectElement) {
         Checkboxes.forEach((element) => {
             if (element.checked) {
                 arr.push(element.value);
-                console.log(arr);
             }
         });
         var arr1 = arr.reverse();
-        console.log(arr1)
 
         AllTasks.forEach((element, elementIndex) => {
             if (element.projectId === selectedProject) {
@@ -544,11 +529,9 @@ function DeleteTask(selectElement) {
         Checkboxes.forEach((element) => {
             if (element.checked) {
                 arr.push(element.value);
-                console.log(arr);
             }
         });
         var arr1 = arr.reverse();
-        console.log(arr1)
 
         AllTasks.forEach((element, elementIndex) => {
             if (element.projectId === selectedProject) {
@@ -701,7 +684,6 @@ function updateTodayTasks() {
             if (element.projectId === selectedProject) {
                 Exist = true;
                 element.todayTask.task.forEach((task, index) => {
-                    console.log(`TodayTask : ${selectedProject}`);
                     var Alignment = document.createElement('div');
                     Alignment.className = 'alignment';
                     var Div = document.createElement('div');
@@ -765,8 +747,8 @@ function updateUpcomingTasks() {
             if (element.projectId === selectedProject) {
                 Exist = true;
                 element.upcomingTask.task.forEach((task, index) => {
-                    var Alignment = document.createElement('div');
-                    Alignment.className = 'alignment';
+                    var AlignmentUp = document.createElement('div');
+                    AlignmentUp.className = 'alignment';
                     var Div = document.createElement('div');
                     var Itag = document.createElement('i');
                     Itag.className = 'bx bx-list-ul list';
@@ -778,9 +760,9 @@ function updateUpcomingTasks() {
                     Input.type = 'button';
                     Div.appendChild(Itag);
                     Div.appendChild(H5);
-                    Alignment.appendChild(Div);
-                    Alignment.appendChild(Input);
-                    upcomingTask.appendChild(Alignment);
+                    AlignmentUp.appendChild(Div);
+                    AlignmentUp.appendChild(Input);
+                    upcomingTask.appendChild(AlignmentUp);
                 })
             }
         })
