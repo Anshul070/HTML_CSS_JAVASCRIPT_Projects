@@ -46,7 +46,7 @@ upcomingTask.addEventListener('dragover', (ev) => {
     try{
         var dragItem = document.querySelector('.dragging');
     var a = dragItem.childNodes;
-    var b = a[0].childNodes
+    var b = a[0].childNodes;
     DragedUpcomingTask = b[1].innerHTML
     }
     catch(e){
@@ -57,6 +57,7 @@ upcomingTask.addEventListener('drop',(ev) => {
     if(DragedUpcomingTask !== null && DragedUpcomingTask !== ""){
         DropUpcomingTask(DragedUpcomingTask);
         RemoveTodayTask(DragedUpcomingTask);
+        DragedUpcomingTask = "";
     }
 });
 
@@ -150,6 +151,7 @@ function Operation(selectID) {
     var selectElement = document.getElementById(selectID)
 
     if (selectElement.value === 'Add') {
+        var Exist = false;
         if (selectElement.id === "operation") {
             TodayTask.innerHTML = '';
             var Alignment = document.createElement('div');
@@ -226,11 +228,12 @@ function Operation(selectID) {
                         btn.value = "Edit";
                         btn.addEventListener("click", e => EditTask(selectElement));
                         TodayTask.appendChild(btn);
-                    }
-                    else {
-                        TodayTask.innerHTML = 'Nothing to edit';
+                        Exist = true;
                     }
                 })
+                if (!Exist){
+                    TodayTask.innerHTML = 'Nothing to edit';
+                }
             }
             else {
                 var arr = JSON.parse(localStorage.UpcomingProjectsTasks);
@@ -262,11 +265,12 @@ function Operation(selectID) {
                         btn.value = "Edit";
                         btn.addEventListener("click", e => EditTask(selectElement));
                         upcomingTask.appendChild(btn);
-                    }
-                    else {
-                        upcomingTask.innerHTML = 'Nothing to edit';
+                        Exist = true;
                     }
                 })
+                if(!Exist) {
+                    upcomingTask.innerHTML = 'Nothing to edit';
+                }
             }
 
 
@@ -328,11 +332,12 @@ function Operation(selectID) {
                         btn.addEventListener("click", e => DeleteTask(selectElement));
                         checkBoxValue = 0;
                         TodayTask.appendChild(btn);
-                    }
-                    else {
-                        TodayTask.innerHTML = 'Nothing to Delete';
+                        Exist = true;
                     }
                 });
+                if(!Exist) {
+                    TodayTask.innerHTML = 'Nothing to Delete';
+                }
             }
             else {
                 upcomingTask.innerHTML = '';
@@ -371,12 +376,13 @@ function Operation(selectID) {
                         btn.value = "Delete";
                         btn.addEventListener("click", e => DeleteTask(selectElement));
                         checkBoxValue = 0;
+                        Exist = true;
                         upcomingTask.appendChild(btn);
                     }
-                    else {
-                        upcomingTask.innerHTML = 'Nothing to Delete';
-                    }
                 });
+                if(!Exist) {
+                    upcomingTask.innerHTML = 'Nothing to Delete';
+                }
             }
         }
         else {
