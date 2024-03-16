@@ -65,25 +65,28 @@ upcomingTask.addEventListener('drop',(ev) => {
 });
 
 function DropUpcomingTask(taskName){
-    console.log('DropUpcomingTask');
+    var Exist = false;
     var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [taskName]} }
-        var Tasks = [];
-        Tasks.push(ProjectTasks);
-        var StringJson = JSON.stringify(Tasks);
-        if (localStorage.UpcomingProjectsTasks) {
-            var checkId = JSON.parse(localStorage.UpcomingProjectsTasks);
-            checkId.forEach((element) => {
-                if (element.projectId === selectedProject) {
+    var Tasks = [];
+    Tasks.push(ProjectTasks);
+    var StringJson = JSON.stringify(Tasks);
+    if (localStorage.UpcomingProjectsTasks) {
+        var checkId = JSON.parse(localStorage.UpcomingProjectsTasks);
+        checkId.forEach((element) => {
+            if (element.projectId === selectedProject) {
+                    console.log('if');
                     element.upcomingTask.task.push(ProjectTasks.upcomingTask.task[0]);
                     localStorage.UpcomingProjectsTasks = JSON.stringify(checkId);
-                }
-                else {
-                    localStorage.UpcomingProjectsTasks += StringJson;
-                    var LocalString = localStorage.UpcomingProjectsTasks;
-                    var CorrectString = LocalString.replace("][", ",");
-                    localStorage.UpcomingProjectsTasks = CorrectString;
+                    Exist = true;
                 }
             })
+            if(!Exist) {
+                console.log('else');
+                localStorage.UpcomingProjectsTasks += StringJson;
+                var LocalString = localStorage.UpcomingProjectsTasks;
+                var CorrectString = LocalString.replace("][", ",");
+                localStorage.UpcomingProjectsTasks = CorrectString;
+            }
             console.log(checkId);
         }
         else {
@@ -403,6 +406,7 @@ function Operation(selectID) {
 function AddTask(selectElement) {
     var TaskInput = document.getElementById('TaskInput');
     var IndicatorSelecter = document.getElementById('IndicatorSelecter');
+    var Exist = false;
     if (selectElement.id === "operation") {
         var ProjectTasks = { "projectId": selectedProject, "todayTask": { 'task': [TaskInput.value], 'indicator': [!IndicatorSelecter.value ? "indicators-approved" : IndicatorSelecter.value] } }
         console.log(IndicatorSelecter.value)
@@ -416,14 +420,15 @@ function AddTask(selectElement) {
                     element.todayTask.task.push(ProjectTasks.todayTask.task[0]);
                     element.todayTask.indicator.push(ProjectTasks.todayTask.indicator[0]);
                     localStorage.TodayProjectsTasks = JSON.stringify(checkId);
-                }
-                else {
-                    localStorage.TodayProjectsTasks += StringJson;
-                    var LocalString = localStorage.TodayProjectsTasks;
-                    var CorrectString = LocalString.replace("][", ",");
-                    localStorage.TodayProjectsTasks = CorrectString;
+                    Exist = true;
                 }
             })
+            if(!Exist) {
+                localStorage.TodayProjectsTasks += StringJson;
+                var LocalString = localStorage.TodayProjectsTasks;
+                var CorrectString = LocalString.replace("][", ",");
+                localStorage.TodayProjectsTasks = CorrectString;
+            }
             console.log(checkId);
         }
         else {
