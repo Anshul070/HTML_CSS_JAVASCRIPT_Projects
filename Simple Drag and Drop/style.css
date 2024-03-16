@@ -1,22 +1,29 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-.Container{
+
+.Container {
     width: 100%;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-#left,#right{
+
+#left,
+#right {
     width: 300px;
     min-height: 400px;
     border: 2px dashed #000000;
     margin: 20px;
 }
-#List1,#List2,#List3,#List4{
+
+#List1,
+#List2,
+#List3,
+#List4 {
     height: 60px;
     margin: 30px;
     background-color: #370f55;

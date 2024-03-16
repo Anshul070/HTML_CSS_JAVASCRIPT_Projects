@@ -65,6 +65,7 @@ upcomingTask.addEventListener('drop',(ev) => {
 });
 
 function DropUpcomingTask(taskName){
+    console.log('DropUpcomingTask');
     var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [taskName]} }
         var Tasks = [];
         Tasks.push(ProjectTasks);
@@ -682,6 +683,7 @@ function Selected(prId) {
 }
 function updateTodayTasks() {
     ClearProjectTask();
+    var Exist = false;
 
     if (selectedProject === "") {
         TodayTask.innerHTML = 'Select Any Project'
@@ -692,8 +694,9 @@ function updateTodayTasks() {
         var AllTodayTasks = JSON.parse(localStorage.TodayProjectsTasks);
         AllTodayTasks.forEach((element) => {
             if (element.projectId === selectedProject) {
-                console.log('TodayTask');
+                Exist = true;
                 element.todayTask.task.forEach((task, index) => {
+                    console.log(`TodayTask : ${selectedProject}`);
                     var Alignment = document.createElement('div');
                     Alignment.className = 'alignment';
                     var Div = document.createElement('div');
@@ -729,12 +732,8 @@ function updateTodayTasks() {
                     TodayTask.appendChild(Alignment);
                 })
             }
-            else {
-                TodayTask.innerHTML = ''
-                TodayTask.innerHTML = 'No Task Created Yet'
-            }
         })
-        if (AllTodayTasks.length === 0) {
+        if (!Exist) {
             TodayTask.innerHTML = ''
             TodayTask.innerHTML = 'No Task Created Yet'
 
@@ -748,6 +747,7 @@ function updateTodayTasks() {
 }
 function updateUpcomingTasks() {
     ClearProjectTask();
+    var Exist = false;
 
     if (selectedProject === "") {
         upcomingTask.innerHTML = 'Select Any Project'
@@ -758,6 +758,7 @@ function updateUpcomingTasks() {
         var AllTodayTasks = JSON.parse(localStorage.UpcomingProjectsTasks);
         AllTodayTasks.forEach((element) => {
             if (element.projectId === selectedProject) {
+                Exist = true;
                 element.upcomingTask.task.forEach((task, index) => {
                     var Alignment = document.createElement('div');
                     Alignment.className = 'alignment';
@@ -776,14 +777,9 @@ function updateUpcomingTasks() {
                     Alignment.appendChild(Input);
                     upcomingTask.appendChild(Alignment);
                 })
-                console.log('Upcoming task');
-            }
-            else {
-                upcomingTask.innerHTML = ''
-                upcomingTask.innerHTML = 'No Task Created Yet'
             }
         })
-        if (AllTodayTasks.length === 0) {
+        if (!Exist) {
             upcomingTask.innerHTML = ''
             upcomingTask.innerHTML = 'No Task Created Yet'
 
