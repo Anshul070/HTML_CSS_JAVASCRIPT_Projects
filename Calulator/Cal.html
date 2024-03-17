@@ -6,47 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        #Container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        #Border {
-            background-color: rgb(197, 197, 197);
-            padding: 30px;
-            border-radius: 20px;
-            border: 2px solid black;
-        }
-
-        #screen {
-            text-align: end;
-            border: 1px solid black;
-            height: 50px;
-            width: 300px;
-            background-color: aliceblue;
-            color: #000;
-            padding-right: 20px;
-        }
-
-        #btns {
-            padding-top: 10px;
-        }
-
-        .row {
-            padding: 10px;
-            padding-left: 0px;
-            padding-right: 0px;
-        }
-
-        .buttons {
-            border: 1px solid black;
-            height: 50px;
-            width: 78px;
-        }
-    </style>
 </head>
 
 <body>
@@ -88,26 +47,6 @@
         </div>
     </div>
     <script src="script.js"></script>
-    <script>
-        var a = [];
-        function Show(value) {
-            document.getElementById('screen').value += value;
-            a.push(value);
-        }
-        function Clear() {
-            document.getElementById("screen").value = "";
-        }
-        function Cal() {
-            document.getElementById("screen").value = eval(document.getElementById("screen").value);
-        }
-        function Back() {
-            a.pop();
-            document.getElementById("screen").value = "";
-            a.forEach((element, index) => {
-                document.getElementById("screen").value += element;
-            });
-        }
-    </script>
 </body>
 
 </html>
