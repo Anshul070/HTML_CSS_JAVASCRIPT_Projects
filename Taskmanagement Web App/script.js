@@ -145,6 +145,7 @@ else {
 }
 updateProjectList();
 updateTodayTasks();
+updateUpcomingTasks();
 
 //Working Of Select Tag
 function Operation(selectID) {
