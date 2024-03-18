@@ -139,9 +139,17 @@ function upDate(){
                             task.todayTask.indicator.push('indicators-waiting');
                         })
                     }
+                    else{
+                        structToday.push(element);
+                    }
                 })
             });
+            var structString = JSON.stringify(structToday);
+            localStorage.TodayProjectsTasks = structString; 
             localStorage.todayDate++;
+            localStorage.removeItem("UpcomingProjectsTasks");
+            updateTodayTasks();
+            updateUpcomingTasks();
         }
     }
     else{
