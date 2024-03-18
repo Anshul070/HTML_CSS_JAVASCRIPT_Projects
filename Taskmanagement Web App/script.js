@@ -120,44 +120,59 @@ search.addEventListener('input', (e) => {
     });
 });
 
-setInterval(()=>{
+setInterval(() => {
     upDate();
     console.log(localStorage.todayDate);
-},1000)
-function upDate(){
+}, 1000)
+function upDate() {
     var a = new Date().getDate();
-    if(localStorage.todayDate){
-        if(localStorage.todayDate === `${a}`){
+    if (localStorage.todayDate) {
+        if (localStorage.todayDate === `${a}`) {
             console.log(a);
-            var structToday = JSON.parse(localStorage.TodayProjectsTasks);
             var structUpcoming = JSON.parse(localStorage.UpcomingProjectsTasks);
-            structUpcoming.forEach((element,index)=>{
-                structToday.forEach((task)=>{
-                    if(element.projectId === task.projectId){
-                        element.upcomingTask.task.forEach((upcomingTask,taskIndex)=>{
-                            task.todayTask.task.push(upcomingTask);
-                            task.todayTask.indicator.push('indicators-waiting');
-                        })
-                    }
-                    else{
-                        var taskStruct = {'projectId': element.projectId, 'todayTask': {'task': element.upcomingTask.task,'indicator':[]}}
-                        element.upcomingTask.task.forEach((a,b)=>{
-                            taskStruct.todayTask.indicator.push("indicators-waiting");
-                        })
-                        structToday.push(taskStruct);
-                    }
-                })
-            });
-            var structString = JSON.stringify(structToday);
-            localStorage.TodayProjectsTasks = structString; 
-            localStorage.todayDate++;
-            localStorage.removeItem("UpcomingProjectsTasks");
-            updateTodayTasks();
-            updateUpcomingTasks();
+            if (localStorage.TodayProjectsTasks) {
+                var structToday = JSON.parse(localStorage.TodayProjectsTasks);
+                structUpcoming.forEach((element, index) => {
+                    structToday.forEach((task) => {
+                        if (element.projectId === task.projectId) {
+                            element.upcomingTask.task.forEach((upcomingTask, taskIndex) => {
+                                task.todayTask.task.push(upcomingTask);
+                                task.todayTask.indicator.push('indicators-waiting');
+                            })
+                        }
+                        else {
+                            var taskStruct = { 'projectId': element.projectId, 'todayTask': { 'task': element.upcomingTask.task, 'indicator': [] } }
+                            element.upcomingTask.task.forEach((a, b) => {
+                                taskStruct.todayTask.indicator.push("indicators-waiting");
+                            })
+                            structToday.push(taskStruct);
+                        }
+                    })
+                });
+                var structString = JSON.stringify(structToday);
+                localStorage.TodayProjectsTasks = structString;
+                localStorage.todayDate++;
+                localStorage.removeItem("UpcomingProjectsTasks");
+                updateTodayTasks();
+                updateUpcomingTasks();
+            }
+            else{
+                var structToday = []
+                structUpcoming.forEach((element)=>{
+                    console.log('Heloo')
+                    var taskStruct = { 'projectId': element.projectId, 'todayTask': { 'task': element.upcomingTask.task, 'indicator': [] } }
+                    element.upcomingTask.task.forEach((a, b) => {
+                        taskStruct.todayTask.indicator.push("indicators-waiting");
+                    });
+                    structToday.push(taskStruct);
+                });
+                localStorage.TodayProjectsTasks = JSON.stringify(structToday);
+
+            }
         }
     }
-    else{
-        localStorage.todayDate = a+1;
+    else {
+        localStorage.todayDate = a + 1;
     }
 }
 
@@ -449,7 +464,7 @@ function AddTask(selectElement) {
     var IndicatorSelecter = document.getElementById('IndicatorSelecter');
     var Exist = false;
     if (selectElement.id === "operation") {
-        var ProjectTasks = { "projectId": selectedProject, "todayTask": { 'task': [TaskInput.value], 'indicator': [!IndicatorSelecter.value ? "indicators-approved" : IndicatorSelecter.value]} }
+        var ProjectTasks = { "projectId": selectedProject, "todayTask": { 'task': [TaskInput.value], 'indicator': [!IndicatorSelecter.value ? "indicators-approved" : IndicatorSelecter.value] } }
         var Tasks = [];
         Tasks.push(ProjectTasks);
         var StringJson = JSON.stringify(Tasks);
@@ -477,7 +492,7 @@ function AddTask(selectElement) {
 
     }
     else {
-        var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [TaskInput.value]} }
+        var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [TaskInput.value] } }
         var Tasks = [];
         var Exist = false;
         Tasks.push(ProjectTasks);
