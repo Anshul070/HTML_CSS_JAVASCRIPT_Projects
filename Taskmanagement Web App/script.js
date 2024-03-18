@@ -128,7 +128,8 @@ function upDate() {
     var a = new Date().getDate();
     if (localStorage.todayDate) {
         if (localStorage.todayDate === `${a}`) {
-            console.log(a);
+            if(localStorage.UpcomingProjectsTasks){
+                console.log(a);
             var structUpcoming = JSON.parse(localStorage.UpcomingProjectsTasks);
             if (localStorage.TodayProjectsTasks) {
                 var structToday = JSON.parse(localStorage.TodayProjectsTasks);
@@ -152,22 +153,25 @@ function upDate() {
                 var structString = JSON.stringify(structToday);
                 localStorage.TodayProjectsTasks = structString;
                 localStorage.todayDate++;
-                localStorage.removeItem("UpcomingProjectsTasks");
-                updateTodayTasks();
-                updateUpcomingTasks();
             }
             else{
                 var structToday = []
                 structUpcoming.forEach((element)=>{
-                    console.log('Heloo')
                     var taskStruct = { 'projectId': element.projectId, 'todayTask': { 'task': element.upcomingTask.task, 'indicator': [] } }
                     element.upcomingTask.task.forEach((a, b) => {
                         taskStruct.todayTask.indicator.push("indicators-waiting");
                     });
                     structToday.push(taskStruct);
                 });
-                localStorage.TodayProjectsTasks = JSON.stringify(structToday);
-
+                var structString = JSON.stringify(structToday);
+                localStorage.TodayProjectsTasks = structString;
+            }
+            localStorage.removeItem("UpcomingProjectsTasks");
+            updateTodayTasks();
+            updateUpcomingTasks();
+            }
+            else{
+                localStorage.todayDate = a + 1;
             }
         }
     }
