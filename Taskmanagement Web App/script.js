@@ -140,7 +140,11 @@ function upDate(){
                         })
                     }
                     else{
-                        structToday.push(element);
+                        var taskStruct = {'projectId': element.projectId, 'todayTask': {'task': element.upcomingTask.task,'indicator':[]}}
+                        element.upcomingTask.task.forEach((a,b)=>{
+                            taskStruct.todayTask.indicator.push("indicators-waiting");
+                        })
+                        structToday.push(taskStruct);
                     }
                 })
             });
