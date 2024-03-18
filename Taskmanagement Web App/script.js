@@ -43,27 +43,27 @@ function ClearProjectTask() {
 ClearProjectTask();
 upcomingTask.addEventListener('dragover', (ev) => {
     ev.preventDefault();
-    try{
+    try {
         var dragItem = document.querySelector('.dragging');
-    var a = dragItem.childNodes;
-    var b = a[0].childNodes;
-    DragedUpcomingTask = b[1].innerHTML
+        var a = dragItem.childNodes;
+        var b = a[0].childNodes;
+        DragedUpcomingTask = b[1].innerHTML
     }
-    catch(e){
+    catch (e) {
         console.log('ERROR:' + e);
     }
 });
-upcomingTask.addEventListener('drop',(ev) => {
-    if(DragedUpcomingTask !== null && DragedUpcomingTask !== ""){
+upcomingTask.addEventListener('drop', (ev) => {
+    if (DragedUpcomingTask !== null && DragedUpcomingTask !== "") {
         DropUpcomingTask(DragedUpcomingTask);
         RemoveTodayTask(DragedUpcomingTask);
         DragedUpcomingTask = "";
     }
 });
 
-function DropUpcomingTask(taskName){
+function DropUpcomingTask(taskName) {
     var Exist = false;
-    var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [taskName]} }
+    var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [taskName] } }
     var Tasks = [];
     Tasks.push(ProjectTasks);
     var StringJson = JSON.stringify(Tasks);
@@ -71,37 +71,37 @@ function DropUpcomingTask(taskName){
         var checkId = JSON.parse(localStorage.UpcomingProjectsTasks);
         checkId.forEach((element) => {
             if (element.projectId === selectedProject) {
-                    element.upcomingTask.task.push(ProjectTasks.upcomingTask.task[0]);
-                    localStorage.UpcomingProjectsTasks = JSON.stringify(checkId);
-                    Exist = true;
-                }
-            })
-            if(!Exist) {
-                localStorage.UpcomingProjectsTasks += StringJson;
-                var LocalString = localStorage.UpcomingProjectsTasks;
-                var CorrectString = LocalString.replace("][", ",");
-                localStorage.UpcomingProjectsTasks = CorrectString;
+                element.upcomingTask.task.push(ProjectTasks.upcomingTask.task[0]);
+                localStorage.UpcomingProjectsTasks = JSON.stringify(checkId);
+                Exist = true;
             }
+        })
+        if (!Exist) {
+            localStorage.UpcomingProjectsTasks += StringJson;
+            var LocalString = localStorage.UpcomingProjectsTasks;
+            var CorrectString = LocalString.replace("][", ",");
+            localStorage.UpcomingProjectsTasks = CorrectString;
         }
-        else {
-            localStorage.UpcomingProjectsTasks = StringJson;
-        }
-        updateUpcomingTasks();
+    }
+    else {
+        localStorage.UpcomingProjectsTasks = StringJson;
+    }
+    updateUpcomingTasks();
 }
 
-function RemoveTodayTask(taskName){
+function RemoveTodayTask(taskName) {
     var AllTasks = JSON.parse(localStorage.TodayProjectsTasks);
-    AllTasks.forEach((element,elementIndex)=>{
-        if(element.projectId === selectedProject){
+    AllTasks.forEach((element, elementIndex) => {
+        if (element.projectId === selectedProject) {
             var arr = element.todayTask.task;
-            arr.forEach((task,index)=>{
-                if(task===taskName){
-                    element.todayTask.task.splice(index,1);
-                    element.todayTask.indicator.splice(index,1);
+            arr.forEach((task, index) => {
+                if (task === taskName) {
+                    element.todayTask.task.splice(index, 1);
+                    element.todayTask.indicator.splice(index, 1);
                 }
             });
-            if(arr.length ===0){
-                AllTasks.splice(elementIndex,1);
+            if (arr.length === 0) {
+                AllTasks.splice(elementIndex, 1);
             }
         };
     });
@@ -110,13 +110,13 @@ function RemoveTodayTask(taskName){
     updateTodayTasks();
 }
 
-search.addEventListener('input',(e)=>{
+search.addEventListener('input', (e) => {
     var Projects = document.querySelectorAll('.ProjectName');
     var TaskInfo = document.querySelectorAll('.task-info');
     const value = e.target.value.toLowerCase();
-    Projects.forEach((project,index)=>{
+    Projects.forEach((project, index) => {
         const isvisible = project.innerText.toLowerCase().includes(value);
-        TaskInfo[index].classList.toggle('hide',!isvisible);
+        TaskInfo[index].classList.toggle('hide', !isvisible);
     });
 })
 
@@ -129,6 +129,8 @@ function popup() {
 
         addButton.innerText = 'x';
         show++;
+        const audio = new Audio('music.mp3');
+        audio.play();
     }
     else {
         taskOperation.style.opacity = 0;
@@ -232,7 +234,7 @@ function Operation(selectID) {
                         Exist = true;
                     }
                 })
-                if (!Exist){
+                if (!Exist) {
                     TodayTask.innerHTML = 'Nothing to edit';
                 }
             }
@@ -269,7 +271,7 @@ function Operation(selectID) {
                         Exist = true;
                     }
                 })
-                if(!Exist) {
+                if (!Exist) {
                     upcomingTask.innerHTML = 'Nothing to edit';
                 }
             }
@@ -336,7 +338,7 @@ function Operation(selectID) {
                         Exist = true;
                     }
                 });
-                if(!Exist) {
+                if (!Exist) {
                     TodayTask.innerHTML = 'Nothing to Delete';
                 }
             }
@@ -381,7 +383,7 @@ function Operation(selectID) {
                         upcomingTask.appendChild(btn);
                     }
                 });
-                if(!Exist) {
+                if (!Exist) {
                     upcomingTask.innerHTML = 'Nothing to Delete';
                 }
             }
@@ -406,7 +408,7 @@ function AddTask(selectElement) {
     var IndicatorSelecter = document.getElementById('IndicatorSelecter');
     var Exist = false;
     if (selectElement.id === "operation") {
-        var ProjectTasks = { "projectId": selectedProject, "todayTask": { 'task': [TaskInput.value], 'indicator': [!IndicatorSelecter.value ? "indicators-approved" : IndicatorSelecter.value] } }
+        var ProjectTasks = { "projectId": selectedProject, "todayTask": { 'task': [TaskInput.value], 'indicator': [!IndicatorSelecter.value ? "indicators-approved" : IndicatorSelecter.value], 'Date':[Date()]} }
         var Tasks = [];
         Tasks.push(ProjectTasks);
         var StringJson = JSON.stringify(Tasks);
@@ -416,11 +418,12 @@ function AddTask(selectElement) {
                 if (element.projectId === selectedProject) {
                     element.todayTask.task.push(ProjectTasks.todayTask.task[0]);
                     element.todayTask.indicator.push(ProjectTasks.todayTask.indicator[0]);
+                    element.todayTask.Date.push(ProjectTasks.todayTask.Date[0]);
                     localStorage.TodayProjectsTasks = JSON.stringify(checkId);
                     Exist = true;
                 }
             })
-            if(!Exist) {
+            if (!Exist) {
                 localStorage.TodayProjectsTasks += StringJson;
                 var LocalString = localStorage.TodayProjectsTasks;
                 var CorrectString = LocalString.replace("][", ",");
@@ -434,7 +437,7 @@ function AddTask(selectElement) {
 
     }
     else {
-        var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [TaskInput.value]} }
+        var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [TaskInput.value], 'Date':[Date()]} }
         var Tasks = [];
         var Exist = false;
         Tasks.push(ProjectTasks);
@@ -444,11 +447,12 @@ function AddTask(selectElement) {
             checkId.forEach((element) => {
                 if (element.projectId === selectedProject) {
                     element.upcomingTask.task.push(ProjectTasks.upcomingTask.task[0]);
+                    element.upcomingTask.Date.push(ProjectTasks.upcomingTask.Date[0]);
                     localStorage.UpcomingProjectsTasks = JSON.stringify(checkId);
                     Exist = true;
                 }
             })
-            if(!Exist) {
+            if (!Exist) {
                 localStorage.UpcomingProjectsTasks += StringJson;
                 var LocalString = localStorage.UpcomingProjectsTasks;
                 var CorrectString = LocalString.replace("][", ",");
@@ -718,7 +722,7 @@ function updateTodayTasks() {
                     Alignment.draggable = true;
                     Alignment.addEventListener("dragstart", (ev) => {
                         ev.currentTarget.classList.add('dragging');
-                        
+
                     })
                     Alignment.addEventListener("dragend", (ev) => {
                         ev.currentTarget.classList.remove('dragging');
