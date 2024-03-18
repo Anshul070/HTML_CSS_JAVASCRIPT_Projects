@@ -118,7 +118,36 @@ search.addEventListener('input', (e) => {
         const isvisible = project.innerText.toLowerCase().includes(value);
         TaskInfo[index].classList.toggle('hide', !isvisible);
     });
-})
+});
+
+setInterval(()=>{
+    upDate();
+    console.log(localStorage.todayDate);
+},1000)
+function upDate(){
+    var a = new Date().getDate();
+    if(localStorage.todayDate){
+        if(localStorage.todayDate === `${a}`){
+            console.log(a);
+            var structToday = JSON.parse(localStorage.TodayProjectsTasks);
+            var structUpcoming = JSON.parse(localStorage.UpcomingProjectsTasks);
+            structUpcoming.forEach((element,index)=>{
+                structToday.forEach((task)=>{
+                    if(element.projectId === task.projectId){
+                        element.upcomingTask.task.forEach((upcomingTask,taskIndex)=>{
+                            task.todayTask.task.push(upcomingTask);
+                            task.todayTask.indicator.push('indicators-waiting');
+                        })
+                    }
+                })
+            });
+            localStorage.todayDate++;
+        }
+    }
+    else{
+        localStorage.todayDate = a+1;
+    }
+}
 
 
 function popup() {
@@ -129,7 +158,7 @@ function popup() {
 
         addButton.innerText = 'x';
         show++;
-        const audio = new Audio('music.mp3');
+        const audio = new Audio('');
         audio.play();
     }
     else {
@@ -408,7 +437,7 @@ function AddTask(selectElement) {
     var IndicatorSelecter = document.getElementById('IndicatorSelecter');
     var Exist = false;
     if (selectElement.id === "operation") {
-        var ProjectTasks = { "projectId": selectedProject, "todayTask": { 'task': [TaskInput.value], 'indicator': [!IndicatorSelecter.value ? "indicators-approved" : IndicatorSelecter.value], 'Date':[Date()]} }
+        var ProjectTasks = { "projectId": selectedProject, "todayTask": { 'task': [TaskInput.value], 'indicator': [!IndicatorSelecter.value ? "indicators-approved" : IndicatorSelecter.value]} }
         var Tasks = [];
         Tasks.push(ProjectTasks);
         var StringJson = JSON.stringify(Tasks);
@@ -418,7 +447,6 @@ function AddTask(selectElement) {
                 if (element.projectId === selectedProject) {
                     element.todayTask.task.push(ProjectTasks.todayTask.task[0]);
                     element.todayTask.indicator.push(ProjectTasks.todayTask.indicator[0]);
-                    element.todayTask.Date.push(ProjectTasks.todayTask.Date[0]);
                     localStorage.TodayProjectsTasks = JSON.stringify(checkId);
                     Exist = true;
                 }
@@ -437,7 +465,7 @@ function AddTask(selectElement) {
 
     }
     else {
-        var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [TaskInput.value], 'Date':[Date()]} }
+        var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [TaskInput.value]} }
         var Tasks = [];
         var Exist = false;
         Tasks.push(ProjectTasks);
@@ -447,7 +475,6 @@ function AddTask(selectElement) {
             checkId.forEach((element) => {
                 if (element.projectId === selectedProject) {
                     element.upcomingTask.task.push(ProjectTasks.upcomingTask.task[0]);
-                    element.upcomingTask.Date.push(ProjectTasks.upcomingTask.Date[0]);
                     localStorage.UpcomingProjectsTasks = JSON.stringify(checkId);
                     Exist = true;
                 }
