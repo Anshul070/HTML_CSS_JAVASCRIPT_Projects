@@ -41,6 +41,8 @@ function ClearProjectTask() {
     }
 }
 ClearProjectTask();
+
+//drag and drop: tasks from upcoming tasks can be droped from today tasks
 upcomingTask.addEventListener('dragover', (ev) => {
     ev.preventDefault();
     try {
@@ -61,6 +63,7 @@ upcomingTask.addEventListener('drop', (ev) => {
     }
 });
 
+//update the droped takses in local storage
 function DropUpcomingTask(taskName) {
     var Exist = false;
     var ProjectTasks = { "projectId": selectedProject, "upcomingTask": { 'task': [taskName] } }
@@ -89,6 +92,7 @@ function DropUpcomingTask(taskName) {
     updateUpcomingTasks();
 }
 
+// When task from today task droped into upcoming task then the are updated in localstorage 
 function RemoveTodayTask(taskName) {
     var AllTasks = JSON.parse(localStorage.TodayProjectsTasks);
     AllTasks.forEach((element, elementIndex) => {
@@ -122,12 +126,16 @@ search.addEventListener('input', (e) => {
 
 setInterval(() => {
     upDate();
-    console.log(localStorage.todayDate);
-}, 1000)
+    alertNotifier();
+    console.log(localStorage.tommorowDate);
+}, 10000)
+
+
+// for updating upcoming tasks to today task after a day 
 function upDate() {
     var a = new Date().getDate();
-    if (localStorage.todayDate) {
-        if (localStorage.todayDate === `${a}`) {
+    if (localStorage.tommorowDate) {
+        if (localStorage.tommorowDate === `${a}`) {
             if(localStorage.UpcomingProjectsTasks){
                 console.log(a);
             var structUpcoming = JSON.parse(localStorage.UpcomingProjectsTasks);
@@ -152,7 +160,7 @@ function upDate() {
                 });
                 var structString = JSON.stringify(structToday);
                 localStorage.TodayProjectsTasks = structString;
-                localStorage.todayDate++;
+                localStorage.tommorowDate++;
             }
             else{
                 var structToday = []
@@ -171,13 +179,33 @@ function upDate() {
             updateUpcomingTasks();
             }
             else{
-                localStorage.todayDate = a + 1;
+                localStorage.tommorowDate = a + 1;
             }
         }
     }
     else {
-        localStorage.todayDate = a + 1;
+        localStorage.tommorowDate = a + 1;
     }
+}
+
+function alertNotifier(){
+    var AllTask = JSON.parse(localStorage.TodayProjectsTasks);
+    var pendingTask = 0;
+    var waitingTask = 0;
+    AllTask.forEach((element)=>{
+        element.todayTask.indicator.forEach((indicator,index)=>{
+            if(indicator === 'indicators-inprogress'){
+                pendingTask++;
+            }
+            else if(indicator === 'indicators-waiting'){
+                waitingTask++;
+            }
+            else{}
+            
+        });
+    });
+    alert(`You have ${pendingTask} pending and ${waitingTask} waiting tasks`);
+
 }
 
 
