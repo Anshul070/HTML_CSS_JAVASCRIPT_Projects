@@ -18,6 +18,7 @@ var selectedProject = '';
 var search = document.getElementById('search');
 var checkBoxValue = 0;
 var DragedUpcomingTask = '';
+const audio = new Audio('notification1.mp3');
 var colors = [
     "linear-gradient(rgb(190, 255, 190) , rgb(17, 218, 94))",
     "linear-gradient(rgb(190, 250, 255) , rgb(17, 195, 218))",
@@ -136,49 +137,49 @@ function upDate() {
     var a = new Date().getDate();
     if (localStorage.tommorowDate) {
         if (localStorage.tommorowDate === `${a}`) {
-            if(localStorage.UpcomingProjectsTasks){
+            if (localStorage.UpcomingProjectsTasks) {
                 console.log(a);
-            var structUpcoming = JSON.parse(localStorage.UpcomingProjectsTasks);
-            if (localStorage.TodayProjectsTasks) {
-                var structToday = JSON.parse(localStorage.TodayProjectsTasks);
-                structUpcoming.forEach((element, index) => {
-                    structToday.forEach((task) => {
-                        if (element.projectId === task.projectId) {
-                            element.upcomingTask.task.forEach((upcomingTask, taskIndex) => {
-                                task.todayTask.task.push(upcomingTask);
-                                task.todayTask.indicator.push('indicators-waiting');
-                            })
-                        }
-                        else {
-                            var taskStruct = { 'projectId': element.projectId, 'todayTask': { 'task': element.upcomingTask.task, 'indicator': [] } }
-                            element.upcomingTask.task.forEach((a, b) => {
-                                taskStruct.todayTask.indicator.push("indicators-waiting");
-                            })
-                            structToday.push(taskStruct);
-                        }
-                    })
-                });
-                var structString = JSON.stringify(structToday);
-                localStorage.TodayProjectsTasks = structString;
-                localStorage.tommorowDate++;
-            }
-            else{
-                var structToday = []
-                structUpcoming.forEach((element)=>{
-                    var taskStruct = { 'projectId': element.projectId, 'todayTask': { 'task': element.upcomingTask.task, 'indicator': [] } }
-                    element.upcomingTask.task.forEach((a, b) => {
-                        taskStruct.todayTask.indicator.push("indicators-waiting");
+                var structUpcoming = JSON.parse(localStorage.UpcomingProjectsTasks);
+                if (localStorage.TodayProjectsTasks) {
+                    var structToday = JSON.parse(localStorage.TodayProjectsTasks);
+                    structUpcoming.forEach((element, index) => {
+                        structToday.forEach((task) => {
+                            if (element.projectId === task.projectId) {
+                                element.upcomingTask.task.forEach((upcomingTask, taskIndex) => {
+                                    task.todayTask.task.push(upcomingTask);
+                                    task.todayTask.indicator.push('indicators-waiting');
+                                })
+                            }
+                            else {
+                                var taskStruct = { 'projectId': element.projectId, 'todayTask': { 'task': element.upcomingTask.task, 'indicator': [] } }
+                                element.upcomingTask.task.forEach((a, b) => {
+                                    taskStruct.todayTask.indicator.push("indicators-waiting");
+                                })
+                                structToday.push(taskStruct);
+                            }
+                        })
                     });
-                    structToday.push(taskStruct);
-                });
-                var structString = JSON.stringify(structToday);
-                localStorage.TodayProjectsTasks = structString;
+                    var structString = JSON.stringify(structToday);
+                    localStorage.TodayProjectsTasks = structString;
+                    localStorage.tommorowDate++;
+                }
+                else {
+                    var structToday = []
+                    structUpcoming.forEach((element) => {
+                        var taskStruct = { 'projectId': element.projectId, 'todayTask': { 'task': element.upcomingTask.task, 'indicator': [] } }
+                        element.upcomingTask.task.forEach((a, b) => {
+                            taskStruct.todayTask.indicator.push("indicators-waiting");
+                        });
+                        structToday.push(taskStruct);
+                    });
+                    var structString = JSON.stringify(structToday);
+                    localStorage.TodayProjectsTasks = structString;
+                }
+                localStorage.removeItem("UpcomingProjectsTasks");
+                updateTodayTasks();
+                updateUpcomingTasks();
             }
-            localStorage.removeItem("UpcomingProjectsTasks");
-            updateTodayTasks();
-            updateUpcomingTasks();
-            }
-            else{
+            else {
                 localStorage.tommorowDate = a + 1;
             }
         }
@@ -189,24 +190,23 @@ function upDate() {
 }
 
 //it will show an alert for notifying pending tasks
-async function alertNotifier(){
+function alertNotifier() {
     var AllTask = JSON.parse(localStorage.TodayProjectsTasks);
     var pendingTask = 0;
     var waitingTask = 0;
-    AllTask.forEach((element)=>{
-        element.todayTask.indicator.forEach((indicator,index)=>{
-            if(indicator === 'indicators-inprogress'){
+    AllTask.forEach((element) => {
+        element.todayTask.indicator.forEach((indicator, index) => {
+            if (indicator === 'indicators-inprogress') {
                 pendingTask++;
             }
-            else if(indicator === 'indicators-waiting'){
+            else if (indicator === 'indicators-waiting') {
                 waitingTask++;
             }
-            else{}
-            
+            else { }
+
         });
     });
-    const audio = await new Audio('notification1.mp3');
-    audio.onended = function(){alert(`You have ${pendingTask} pending and ${waitingTask} waiting tasks`)}
+    audio.onended = function () { alert(`You have ${pendingTask} pending and ${waitingTask} waiting tasks`) }
     audio.play();
 }
 
@@ -255,7 +255,16 @@ function Operation(selectID) {
             btn.type = "button";
             btn.id = "TaskCreator";
             btn.value = "Done";
-            btn.addEventListener("click", e => AddTask(selectElement));
+            btn.addEventListener("click", () => {
+                if (TaskInput.value !== '') {
+                    AddTask(selectElement);
+                }
+                else {
+                    audio.onended = function () { alert("You can't create a nameless task"); }
+                    audio.play();
+
+                }
+            });
             var Indicator = document.createElement('select');
             Indicator.id = 'IndicatorSelecter';
             Indicator.innerHTML = '<option value="indicators-approved">Approved</option><option value="indicators-inprogress">In-Progress</option><option value="indicators-waiting">In-Waiting</option>'
@@ -276,7 +285,15 @@ function Operation(selectID) {
             btn.type = "button";
             btn.id = "TaskCreator";
             btn.value = "Done";
-            btn.addEventListener("click", e => AddTask(selectElement));
+            btn.addEventListener("click", () => {
+                if (TaskInput.value !== '') {
+                    AddTask(selectElement);
+                }
+                else {
+                    audio.onended = function () { alert("You can't create a nameless task"); }
+                    audio.play();
+                }
+            });
             Div.appendChild(InputTask);
             Alignment.appendChild(Div);
             Alignment.appendChild(btn);
@@ -658,35 +675,40 @@ function DeleteTask(selectElement) {
 
 //It creates and shows how many projects we have .
 CreateButton.addEventListener("click", () => {
-    var a = {};
-    var projectList = [];
-    var strProjects = "";
-    var jsonString = "";
-    a = { 'name': PRname.value, 'description': PRdes.value, 'ProjectId': localStorage.ProjectId };
-    projectList.push(a);
-    localStorage.ProjectId++;
-    if (localStorage.projects) {
-        localStorage.projects += JSON.stringify(projectList);
-        jsonString = localStorage.projects
-        strProjects = jsonString.replace('][', ',');
-        localStorage.projects = strProjects;
-        taskOperation.style.opacity = 0;
-        taskOperation.style.visibility = 'hidden';
-        addCon.classList.remove('addConPopUp');
-        addButton.innerText = '+';
-        show--;
+    if (PRdes.value !== '' && PRname.value !== '') {
+        var a = {};
+        var projectList = [];
+        var strProjects = "";
+        var jsonString = "";
+        a = { 'name': PRname.value, 'description': PRdes.value, 'ProjectId': localStorage.ProjectId };
+        projectList.push(a);
+        localStorage.ProjectId++;
+        if (localStorage.projects) {
+            localStorage.projects += JSON.stringify(projectList);
+            jsonString = localStorage.projects
+            strProjects = jsonString.replace('][', ',');
+            localStorage.projects = strProjects;
+            taskOperation.style.opacity = 0;
+            taskOperation.style.visibility = 'hidden';
+            addCon.classList.remove('addConPopUp');
+            addButton.innerText = '+';
+            show--;
+        }
+        else {
+            localStorage.projects = JSON.stringify(projectList);
+            taskOperation.style.opacity = 0;
+            taskOperation.style.visibility = 'hidden';
+            addCon.classList.remove('addConPopUp');
+            addButton.innerText = '+';
+            show--;
+        }
+        PRname.value = "";
+        PRdes.value = "";
+        updateProjectList();
     }
     else {
-        localStorage.projects = JSON.stringify(projectList);
-        taskOperation.style.opacity = 0;
-        taskOperation.style.visibility = 'hidden';
-        addCon.classList.remove('addConPopUp');
-        addButton.innerText = '+';
-        show--;
+        alert('Please fill the info correctly');
     }
-    PRname.value = "";
-    PRdes.value = "";
-    updateProjectList();
 });
 
 
