@@ -128,7 +128,7 @@ setInterval(() => {
     upDate();
     alertNotifier();
     console.log(localStorage.tommorowDate);
-}, 10000)
+}, 3600000)
 
 
 // for updating upcoming tasks to today task after a day 
@@ -188,7 +188,8 @@ function upDate() {
     }
 }
 
-function alertNotifier(){
+//it will show an alert for notifying pending tasks
+async function alertNotifier(){
     var AllTask = JSON.parse(localStorage.TodayProjectsTasks);
     var pendingTask = 0;
     var waitingTask = 0;
@@ -204,8 +205,9 @@ function alertNotifier(){
             
         });
     });
-    alert(`You have ${pendingTask} pending and ${waitingTask} waiting tasks`);
-
+    const audio = await new Audio('notification1.mp3');
+    audio.onended = function(){alert(`You have ${pendingTask} pending and ${waitingTask} waiting tasks`)}
+    audio.play();
 }
 
 
@@ -217,8 +219,6 @@ function popup() {
 
         addButton.innerText = 'x';
         show++;
-        const audio = new Audio('');
-        audio.play();
     }
     else {
         taskOperation.style.opacity = 0;
