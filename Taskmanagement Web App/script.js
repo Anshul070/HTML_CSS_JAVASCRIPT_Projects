@@ -240,6 +240,7 @@ updateUpcomingTasks();
 //Working Of Select Tag
 function Operation(selectID) {
     var selectElement = document.getElementById(selectID)
+    if(selectedProject !== ''){
 
     if (selectElement.value === 'Add') {
         var Exist = false;
@@ -502,7 +503,15 @@ function Operation(selectID) {
             }
         }
     }
-
+    }
+    else{
+        if (selectElement.id === "operation") {
+            TodayTask.innerHTML = 'Please select any project or create a project first.';
+        }
+        else {
+            upcomingTask.innerHTML = 'Please select any project or create a project first.';
+        }
+    }
     selectElement.selectedIndex = 0;
 }
 
