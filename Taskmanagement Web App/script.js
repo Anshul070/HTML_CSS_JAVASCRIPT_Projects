@@ -129,7 +129,7 @@ setInterval(() => {
     upDate();
     alertNotifier();
     console.log(localStorage.tommorowDate);
-}, 3600000)
+}, 3600000);
 
 
 // for updating upcoming tasks to today task after a day 
