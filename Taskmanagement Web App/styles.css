@@ -426,20 +426,35 @@ hr{
 }
 
 @media (max-width: 768px) {
+    body::-webkit-scrollbar{
+        display: none;
+    }
     #container{
         flex-direction: column;
         height: 200vh;
+        justify-content: center;
     }
     #box1{
-        
+        position: sticky;
         flex-direction: column;
-
-    }
-    #box1,#box2{
         width: 95%;
+        height: 100%;
+    }
+    #box1::after{
+        margin-top: 20px;
+        content: "Scroll to see the taskes";
+    }
+    #box2{
+        position: relative;
+
+        transform: translate(2.5%);
+        width: 80%;
         height: 100%;
         border-radius: 20px;
     }
+    .todayTask{
+    overflow-x: hidden;
+}
 
 
 }
